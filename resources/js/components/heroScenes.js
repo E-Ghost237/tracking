@@ -4,9 +4,10 @@ const POSTERS = {
     air: '/images/freight-air.jpg',
     sea: '/images/freight-sea.jpg',
     road: '/images/freight-road.jpg',
+    express: '/images/freight-express.jpg',
 };
-const SCENES = ['air', 'sea', 'road'];
-const ROTATION_MS = 6800;
+const SCENES = ['air', 'sea', 'road', 'express'];
+const ROTATION_MS = 7200;
 
 /**
  * The home hero moves slowly through air, sea and road photography. Optional

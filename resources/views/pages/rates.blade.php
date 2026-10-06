@@ -2,7 +2,7 @@
 
 @section('content')
     @php
-        $featuredLanes = ['Lagos → London', 'New York → Abidjan', 'Paris → Brussels'];
+        $featuredLanes = ['Houston → Paris', 'New York → London', 'Paris → Brussels'];
         $publicRows = collect($rows)->filter(fn ($row) => in_array($row['from'].' → '.$row['to'], $featuredLanes, true))->values();
     @endphp
 
@@ -13,7 +13,7 @@
     <div class="container-page py-12 sm:py-16">
         <div class="mb-6 grid gap-4 md:grid-cols-3">
             @foreach ([
-                ['scale', __('Weight and dimensions'), __('We use chargeable weight, which compares the scale weight with the parcel’s volume.')],
+                ['scale', __('Weight and dimensions'), __('We use chargeable weight, which compares the scale weight with the parcel volume.')],
                 ['route', __('Route and service'), __('The origin, destination and transport mode all shape the final estimate.')],
                 ['receipt', __('Clear before booking'), __('Review the estimate and included options before you decide how to proceed.')],
             ] as [$icon, $heading, $text])

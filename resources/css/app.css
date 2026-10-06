@@ -256,7 +256,7 @@
     object-fit: cover;
     opacity: 0;
     transform: scale(1.025);
-    transition: opacity 1400ms cubic-bezier(0.2, 0.65, 0.2, 1), transform 9000ms ease-out;
+    transition: opacity 1600ms cubic-bezier(0.2, 0.65, 0.2, 1), transform 9000ms ease-out;
     will-change: opacity, transform;
 }
 
@@ -272,6 +272,20 @@ html.js .hero-scene-image {
 html.js .hero-scene-image.is-active {
     opacity: 1;
     transform: scale(1.09) translateX(-0.4%);
+}
+
+/* Express scene has a slightly different treatment */
+html.js .hero-scene-image.is-active[data-scene="express"] {
+    transform: scale(1.06) translateX(0.2%);
+}
+
+/* Smooth scene transitions with subtle parallax */
+.hero-scene-image.is-active {
+    z-index: 1;
+}
+
+.hero-scene-image:not(.is-active) {
+    z-index: 0;
 }
 
 .hero-scene-overlay {
@@ -350,4 +364,73 @@ html.js .hero-scene-image.is-active {
         width: 42vw;
         opacity: 0.25;
     }
+}
+
+/* Enhanced service photo hover effect */
+.service-photo {
+    position: relative;
+    overflow: hidden;
+}
+
+.service-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(7, 21, 28, 0.6) 100%);
+    opacity: 0;
+    transition: opacity 400ms ease;
+}
+
+.group:hover .service-photo::after,
+.service-photo:hover::after {
+    opacity: 1;
+}
+
+/* Globe connection lines effect */
+.globe-container {
+    position: relative;
+}
+
+.globe-container::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(circle at center, rgba(131, 214, 207, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Smooth scroll reveal enhancement */
+html.js [data-reveal] {
+    will-change: transform, opacity;
+}
+
+/* Decorative grid pattern for dark sections */
+.grid-bg {
+    background-image:
+        linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+}
+
+/* Floating animation for decorative elements */
+.animate-float-slow {
+    animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(1deg);
+    }
+}
+
+/* Gradient text effect for headings */
+.gradient-text {
+    background: linear-gradient(135deg, #c54727 0%, #e98b68 50%, #c54727 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }

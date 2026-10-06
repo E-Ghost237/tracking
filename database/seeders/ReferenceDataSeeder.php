@@ -140,14 +140,12 @@ class ReferenceDataSeeder extends Seeder
     private function locations(): void
     {
         $hubs = [
-            ['Douala Hub', 'Douala', 'CM', 4.0511, 9.7679, ['air', 'sea', 'road'], 'Zone portuaire, Bonaberi'],
-            ['Yaoundé Hub', 'Yaoundé', 'CM', 3.848, 11.5021, ['air', 'road'], 'Quartier Nsimeyong'],
+            ['Houston Hub', 'Houston', 'US', 29.7604, -95.3698, ['air', 'sea', 'road'], 'Port of Houston'],
             ['Paris CDG Hub', 'Paris', 'FR', 48.8566, 2.3522, ['air', 'road'], 'Zone de fret, Roissy'],
             ['Le Havre Port', 'Le Havre', 'FR', 49.4944, 0.1079, ['sea'], 'Port 2000'],
             ['Brussels Hub', 'Brussels', 'BE', 50.8503, 4.3517, ['air', 'road'], 'Brucargo'],
             ['London Hub', 'London', 'GB', 51.5072, -0.1276, ['air'], 'Heathrow cargo area'],
             ['New York Hub', 'New York', 'US', 40.7128, -74.006, ['air', 'road'], 'JFK cargo area'],
-            ['Houston Hub', 'Houston', 'US', 29.7604, -95.3698, ['air', 'sea', 'road'], 'Port of Houston'],
             ['Atlanta Hub', 'Atlanta', 'US', 33.749, -84.388, ['air', 'road'], 'ATL cargo city'],
             ['Montreal Hub', 'Montreal', 'CA', 45.5019, -73.5674, ['air'], 'YUL cargo'],
             ['Lagos Hub', 'Lagos', 'NG', 6.5244, 3.3792, ['air', 'sea', 'road'], 'Ikeja'],
@@ -165,10 +163,10 @@ class ReferenceDataSeeder extends Seeder
         }
 
         $points = [
-            ['Akwa drop-off point', 'Douala', 'CM', 4.0483, 9.7043, 'Boulevard de la Liberté'],
-            ['Bastos drop-off point', 'Yaoundé', 'CM', 3.8889, 11.5135, 'Rue 1.750, Bastos'],
             ['Saint-Denis drop-off point', 'Saint-Denis', 'FR', 48.9362, 2.3574, 'Rue de la République'],
             ['Brooklyn drop-off point', 'New York', 'US', 40.6782, -73.9442, 'Fulton Street'],
+            ['Hoxton drop-off point', 'London', 'GB', 51.5440, -0.0915, 'Shoreditch High Street'],
+            ['Barcelona drop-off point', 'Barcelona', 'ES', 41.3874, 2.1686, 'La Rambla'],
         ];
         foreach ($points as [$name, $city, $country, $lat, $lon, $line]) {
             Location::query()->updateOrCreate(['name' => $name], [
