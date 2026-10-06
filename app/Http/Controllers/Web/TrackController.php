@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Carrier;
 use App\Services\Tracking\CarrierDetector;
 use App\Services\Tracking\TrackingService;
 use Illuminate\Contracts\View\View;
@@ -36,6 +37,11 @@ class TrackController extends Controller
             $number = $canonical;
         }
 
-        return view('pages.track', ['number' => $number, 'result' => $result]);
+        return view('pages.track', [
+            'number' => $number,
+            'result' => $result,
+            // Formats we recognise, so the page can say so before a lookup (FR-11).
+            'carrierFormats' => Carrier::formatsForClient(),
+        ]);
     }
 }

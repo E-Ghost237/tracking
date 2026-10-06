@@ -7,7 +7,7 @@
                 <x-slot name="description">Links expire after 5 minutes. Images were re-encoded to strip metadata.</x-slot>
                 <div class="space-y-6">
                     @foreach ($fileLinks as $file)
-                        <div x-data="{ zoom: 1, rotate: 0 }" class="rounded-xl border border-gray-200 p-3 dark:border-white/10">
+                        <div x-data="{ zoom: 1, rotate: 0 }" class="rounded-[6px] border border-gray-200 p-3 dark:border-white/10">
                             <div class="mb-3 flex flex-wrap items-center gap-2 text-sm">
                                 <span class="font-medium">{{ $file['name'] }}</span>
                                 <x-filament::badge :color="$file['scan'] === 'clean' ? 'success' : ($file['scan'] === 'infected' ? 'danger' : 'warning')">scan: {{ $file['scan'] }}</x-filament::badge>
@@ -23,7 +23,7 @@
                             @if (! $file['url'])
                                 <p class="text-sm text-danger-600">This file failed the security scan and was removed.</p>
                             @elseif (str_starts_with($file['mime'], 'image/'))
-                                <div class="max-h-[640px] overflow-auto rounded-lg bg-gray-50 dark:bg-white/5">
+                                <div class="max-h-[640px] overflow-auto rounded-[4px] bg-gray-50 dark:bg-white/5">
                                     <img src="{{ $file['url'] }}" alt="Proof of payment" class="mx-auto origin-center transition-transform duration-200"
                                          x-bind:style="{ transform: 'scale(' + zoom + ') rotate(' + rotate + 'deg)' }">
                                 </div>
@@ -46,7 +46,7 @@
                     @if ($overview['two_person'])<x-filament::badge color="warning">Two approvals required</x-filament::badge>@endif
                     @if ($proof->is_duplicate)<x-filament::badge color="danger">Possible duplicate</x-filament::badge>@endif
                 </div>
-                <dl class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                <dl class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm tabular-nums">
                     <dt class="text-gray-500">Amount due</dt><dd class="text-right font-semibold">{{ $overview['due'] }}</dd>
                     <dt class="text-gray-500">Declared paid</dt><dd @class(['text-right font-semibold', 'text-success-600' => $overview['matches'], 'text-danger-600' => ! $overview['matches']])>{{ $overview['declared'] }}</dd>
                     <dt class="text-gray-500">Method</dt><dd class="text-right">{{ $overview['method'] }}</dd>
@@ -61,10 +61,10 @@
                     @endif
                 </dl>
                 @if ($proof->customer_note)
-                    <p class="mt-4 rounded-lg bg-gray-50 p-3 text-sm dark:bg-white/5"><span class="font-medium">Customer note:</span> {{ $proof->customer_note }}</p>
+                    <p class="mt-4 rounded-[4px] bg-gray-50 p-3 text-sm dark:bg-white/5"><span class="font-medium">Customer note:</span> {{ $proof->customer_note }}</p>
                 @endif
                 @if ($proof->is_duplicate)
-                    <p class="mt-4 rounded-lg bg-danger-50 p-3 text-sm text-danger-700 dark:bg-danger-500/10">Same file or transaction ID already used on: {{ implode(', ', $proof->duplicate_of ?? []) }}</p>
+                    <p class="mt-4 rounded-[4px] bg-danger-50 p-3 text-sm text-danger-700 dark:bg-danger-500/10">Same file or transaction ID already used on: {{ implode(', ', $proof->duplicate_of ?? []) }}</p>
                 @endif
             </x-filament::section>
 

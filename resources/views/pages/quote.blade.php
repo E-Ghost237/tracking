@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => __('Get a quote'), 'description' => __('Instant air, sea and road freight prices with transit times.')])
 
 @section('content')
-    <x-page-header :eyebrow="__('Rate calculator')" icon="calculator" :title="__('Price your shipment in seconds')"
+    <x-page-header photo="editorial_documents" :eyebrow="__('Rate calculator')" icon="calculator" :title="__('Price your shipment in seconds')"
                    :lead="__('Chargeable weight is the larger of the actual weight and the volume (L × W × H ÷ 5000). The final price is confirmed at booking.')" />
 
     <div x-data="quoteForm" data-auth="{{ auth()->check() ? 'true' : 'false' }}" data-login-url="{{ lroute('login') }}"
@@ -21,7 +21,7 @@
                 <legend class="flex items-center gap-2 font-display text-lg font-bold text-ink-900"><span class="grid size-7 place-items-center rounded-full bg-ink-900 text-xs text-white">2</span> {{ __('Packages') }}</legend>
                 <div class="mt-5 space-y-3">
                     <template x-for="(pkg, index) in packages" :key="index">
-                        <div class="grid grid-cols-2 gap-3 rounded-2xl border border-line bg-surface/50 p-4 sm:grid-cols-[repeat(4,1fr)_auto]">
+                        <div class="grid grid-cols-2 gap-3 rounded-[6px] border border-line bg-surface/50 p-4 sm:grid-cols-[repeat(4,1fr)_auto]">
                             <label class="text-xs font-medium text-slate-600">{{ __('Weight (kg)') }}
                                 <input x-model="pkg.weight_kg" type="number" min="0.1" max="3000" step="0.1" required class="field mt-1">
                             </label>
@@ -34,7 +34,7 @@
                             <label class="text-xs font-medium text-slate-600">{{ __('Height (cm)') }}
                                 <input x-model="pkg.height_cm" type="number" min="1" max="600" required class="field mt-1">
                             </label>
-                            <button type="button" @click="removePackage(index)" x-show="packages.length > 1" class="col-span-2 mt-auto grid h-[42px] place-items-center rounded-xl text-slate-400 hover:bg-red-50 hover:text-red-600 sm:col-span-1" aria-label="{{ __('Remove package') }}">
+                            <button type="button" @click="removePackage(index)" x-show="packages.length > 1" class="col-span-2 mt-auto grid h-[42px] place-items-center rounded-[4px] text-slate-500 hover:bg-red-50 hover:text-red-600 sm:col-span-1" aria-label="{{ __('Remove package') }}">
                                 <x-lucide name="trash-2" class="size-4" />
                             </button>
                         </div>
@@ -48,7 +48,7 @@
                 <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
                     @foreach (['air' => ['plane', __('Air')], 'express' => ['zap', __('Express')], 'sea' => ['ship', __('Sea')], 'road' => ['truck', __('Road')]] as $mode => [$icon, $label])
                         <button type="button" @click="setMode('{{ $mode }}')" :aria-pressed="mode === '{{ $mode }}'"
-                                class="flex flex-col items-center gap-2 rounded-2xl border-2 p-4 text-sm font-semibold transition"
+                                class="flex flex-col items-center gap-2 rounded-[6px] border-2 p-4 text-sm font-semibold transition"
                                 :class="mode === '{{ $mode }}' ? 'border-brand-500 bg-brand-50 text-ink-900' : 'border-line text-slate-600 hover:border-slate-300'">
                             <x-lucide :name="$icon" class="size-6" /> {{ $label }}
                         </button>
@@ -59,7 +59,7 @@
                         <label for="declared" class="field-label">{{ __('Declared value (USD)') }}</label>
                         <input id="declared" x-model="declaredValue" type="number" min="0" max="1000000" step="0.01" class="field" placeholder="0.00">
                     </div>
-                    <label class="flex cursor-pointer items-center gap-3 self-end rounded-xl border border-line p-3">
+                    <label class="flex cursor-pointer items-center gap-3 self-end rounded-[4px] border border-line p-3">
                         <input type="checkbox" x-model="insurance" class="size-5 rounded border-line text-brand-500 focus:ring-brand-500">
                         <span class="text-sm"><span class="font-semibold text-ink-900">{{ __('Add insurance') }}</span><br><span class="text-slate-500">{{ __('Covers loss and damage up to the declared value.') }}</span></span>
                     </label>
@@ -79,7 +79,7 @@
             <div x-ref="result" class="card overflow-hidden">
                 <template x-if="!result">
                     <div class="p-8 text-center">
-                        <span class="mx-auto grid size-14 place-items-center rounded-2xl bg-brand-50 text-brand-500"><x-lucide name="receipt" class="size-7" /></span>
+                        <span class="mx-auto grid size-14 place-items-center rounded-[8px] bg-brand-50 text-brand-500"><x-lucide name="receipt" class="size-7" /></span>
                         <p class="mt-4 font-display text-lg font-bold text-ink-900">{{ __('Your quote') }}</p>
                         <p class="mt-1 text-sm text-slate-600">{{ __('Fill in the route and packages to see the price, transit time and delivery network.') }}</p>
                     </div>
@@ -87,8 +87,8 @@
                 <template x-if="result">
                     <div>
                         <div class="bg-gradient-to-br from-ink-900 to-ink-800 p-6 text-white">
-                            <p class="text-xs font-semibold tracking-wider text-slate-400 uppercase">{{ __('Estimated price') }} · <span x-text="modeLabel(result.mode)"></span></p>
-                            <p class="mt-2 font-display text-4xl font-extrabold"><span x-text="result.price_range.min_formatted"></span><span class="text-xl text-slate-400" x-show="result.price_range.max > result.price_range.min"> – <span x-text="result.price_range.max_formatted"></span></span></p>
+                            <p class="text-xs font-semibold tracking-wider text-slate-500 uppercase">{{ __('Estimated price') }} · <span x-text="modeLabel(result.mode)"></span></p>
+                            <p class="mt-2 font-display text-4xl font-extrabold"><span x-text="result.price_range.min_formatted"></span><span class="text-xl text-slate-500" x-show="result.price_range.max > result.price_range.min"> – <span x-text="result.price_range.max_formatted"></span></span></p>
                             <p class="mt-2 text-sm text-slate-300">{{ __('Reference') }} <span class="font-mono" x-text="result.reference"></span></p>
                         </div>
                         <dl class="divide-y divide-line text-sm">
@@ -109,7 +109,7 @@
             <div class="overflow-hidden rounded-[1.75rem] bg-ink-950">
                 <div x-data="globe" data-network="false" data-distance="3" class="relative aspect-[4/3]">
                     <div x-ref="canvas" class="absolute inset-0"></div>
-                    <div x-show="fallback" x-cloak class="absolute inset-0 flex items-center p-4"><img src="/images/world-map.svg" alt="{{ __('World map') }}" class="w-full rounded-xl"></div>
+                    <div x-show="fallback" x-cloak class="absolute inset-0 flex items-center p-4"><img src="/images/world-map.svg" alt="{{ __('World map') }}" class="w-full rounded-[6px]"></div>
                 </div>
             </div>
         </aside>

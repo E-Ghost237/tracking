@@ -6,8 +6,8 @@
             @csrf
             <div>
                 <label for="code" class="field-label">{{ __('Code') }}</label>
-                <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" required autofocus maxlength="20" class="field text-center font-mono text-2xl tracking-[0.4em]">
-                @error('code')<p class="field-error">{{ $message }}</p>@enderror
+                <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" required autofocus maxlength="20" class="field text-center font-mono text-2xl tracking-[0.4em]" @error('code') aria-invalid="true" aria-describedby="code-error" @enderror>
+                @error('code')<p class="field-error" id="code-error">{{ $message }}</p>@enderror
             </div>
             <button type="submit" class="btn-primary w-full">{{ __('Verify') }}</button>
         </form>

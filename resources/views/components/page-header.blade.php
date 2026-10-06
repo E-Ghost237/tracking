@@ -1,13 +1,30 @@
-@props(['eyebrow' => null, 'title', 'lead' => null, 'icon' => null])
-<section class="page-masthead relative isolate overflow-hidden border-b border-line">
-    <span class="pointer-events-none absolute inset-y-0 left-0 w-1 bg-brand-500" aria-hidden="true"></span>
-    <div class="container-page relative py-14 sm:py-16 lg:py-20">
+@props(['eyebrow' => null, 'title', 'lead' => null, 'icon' => null, 'photo' => null])
+@php
+    /*
+     * Sub-page masthead: a navy band that anchors every page, with an optional
+     * photograph behind a dark wash. The photo is decorative here — the heading
+     * carries the meaning — so it is hidden from assistive technology.
+     */
+    $photo_key = $photo;
+    $photo = $photo ? media($photo) : null;
+@endphp
+<section class="page-masthead relative isolate overflow-hidden">
+    @if ($photo)
+        {{-- The masthead photo is the largest paint on a sub-page, so it is served as
+             WebP from the same registry as every other photograph and preloaded. --}}
+        <div class="absolute inset-0 -z-20" aria-hidden="true">
+            <x-photo :key="$photo_key" class="size-full object-cover object-center" sizes="100vw" priority />
+        </div>
+        <div class="absolute inset-0 -z-10 bg-ink-950/85" aria-hidden="true"></div>
+    @endif
+
+    <div class="container-page py-10 sm:py-12 lg:py-14">
         @if ($eyebrow)
-            <p class="eyebrow eyebrow-rule">@if ($icon)<x-lucide :name="$icon" class="size-4" />@endif {{ $eyebrow }}</p>
+            <p class="eyebrow !text-slate-300">@if ($icon)<x-lucide :name="$icon" class="size-4" />@endif {{ $eyebrow }}</p>
         @endif
-        <h1 class="editorial-title mt-4 max-w-4xl text-4xl leading-[1.02] text-ink-900 sm:text-6xl">{{ $title }}</h1>
+        <h1 class="mt-3 max-w-4xl text-[1.75rem] leading-[1.12] font-bold text-white sm:text-4xl lg:text-[2.6rem]">{{ $title }}</h1>
         @if ($lead)
-            <p class="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">{{ $lead }}</p>
+            <p class="mt-4 max-w-2xl text-[15px] leading-7 text-slate-300 sm:text-base">{{ $lead }}</p>
         @endif
         {{ $slot }}
     </div>

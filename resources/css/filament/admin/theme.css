@@ -1,4 +1,781 @@
+/*
+|--------------------------------------------------------------------------
+| Back-office theme — Corvane
+|--------------------------------------------------------------------------
+|
+| The panel is styled only through Filament's documented CSS hook classes
+| (`fi-*`). Vendor Blade views are never published or patched, so a Filament
+| upgrade cannot silently break the back-office.
+|
+| The admin follows the same visual language as the public site in
+| resources/css/app.css: one navy, one signal accent, one neutral ramp, a
+| radius scale that stops at 8px, and hairlines instead of stacked shadows.
+| The radius, shadow and colour tokens are mirrored below — if the site file
+| changes, change this block with it.
+|
+| Everything that differs between light and dark mode is a `--cv-*` custom
+| property set on `.fi-body` and re-declared under `.dark`, so each surface is
+| written once and stays readable in both modes.
+|
+| Note: Filament imports its own component CSS inside cascade layers, so the
+| unlayered rules below win without `!important`. The only vendor declarations
+| they can therefore not "lose" to are the inline palette variables the panel
+| prints for `--primary-*`, `--gray-*`, `--danger-*` and friends.
+|
+*/
+
+@import '@fontsource-variable/inter';
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
 
-@source '../../../../app/Filament/**/*';
-@source '../../../../resources/views/filament/**/*';
+/* Filament only compiles the utilities it can find in these paths. */
+@source '../../../../app/Filament';
+@source '../../../../resources/views/filament';
+
+/*
+|--------------------------------------------------------------------------
+| 1. Tokens — mirror of resources/css/app.css
+|--------------------------------------------------------------------------
+*/
+
+@theme {
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+    /* Navy — structure, headers, dark bands, primary text. */
+    --color-ink-50: #eff3f8;
+    --color-ink-100: #dde6f0;
+    --color-ink-200: #c0d0e2;
+    --color-ink-300: #94adc9;
+    --color-ink-400: #5d7fa6;
+    --color-ink-500: #375c86;
+    --color-ink-600: #234669;
+    --color-ink-700: #17334f;
+    --color-ink-800: #0f2740;
+    --color-ink-900: #0b1f36;
+    --color-ink-950: #061526;
+
+    /* Signal accent — calls to action only (white on brand-500 = 5.2:1). */
+    --color-brand-50: #fdf2ec;
+    --color-brand-100: #fbe0d1;
+    --color-brand-200: #f5bb9a;
+    --color-brand-300: #ef9a68;
+    --color-brand-400: #e2703a;
+    --color-brand-500: #c2410c;
+    --color-brand-600: #9a3412;
+    --color-brand-700: #7c2d12;
+
+    --color-route-400: #7fb3e0;
+    --color-route-500: #3b74a8;
+
+    --color-paper: #ffffff;
+    --color-surface: #f5f7fa;
+    --color-line: #e3e8ef;
+
+    /*
+     * Corner radius. The back-office is dense, so controls sit at 4px and
+     * containers at 6px; Filament expresses both through `rounded-lg` and
+     * `rounded-xl`, which is why those two tokens carry the scale.
+     */
+    --radius-xs: 2px;
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 4px;
+    --radius-xl: 6px;
+    --radius-2xl: 8px;
+    --radius-3xl: 8px;
+
+    /* Two quiet elevations, no glows. */
+    --shadow-xs: 0 1px 2px rgb(6 21 38 / 0.04);
+    --shadow-sm: 0 1px 2px rgb(6 21 38 / 0.05);
+    --shadow-md: 0 1px 2px rgb(6 21 38 / 0.05), 0 3px 6px -4px rgb(6 21 38 / 0.12);
+    --shadow-lg: 0 2px 4px rgb(6 21 38 / 0.05), 0 12px 20px -14px rgb(6 21 38 / 0.22);
+    --shadow-xl: 0 2px 4px rgb(6 21 38 / 0.05), 0 12px 20px -14px rgb(6 21 38 / 0.22);
+    --shadow-2xl: 0 2px 4px rgb(6 21 38 / 0.06), 0 18px 28px -20px rgb(6 21 38 / 0.24);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 2. Surface tokens
+|--------------------------------------------------------------------------
+*/
+
+.fi-body {
+    --cv-canvas: #f5f7fa;
+    --cv-panel: #ffffff;
+    --cv-line: #e3e8ef;
+    --cv-line-strong: #c0d0e2;
+    --cv-line-hover: #94adc9;
+    --cv-ink: #061526;
+    --cv-muted: #546078;
+    --cv-field: #ffffff;
+    --cv-hover: #eff3f8;
+    --cv-accent: #c2410c;
+    --cv-on-accent: #ffffff;
+    --cv-on-ink: #ffffff;
+    --cv-band: #061526;
+}
+
+.dark .fi-body {
+    --cv-canvas: #061526;
+    --cv-panel: #0b1f36;
+    --cv-line: rgb(255 255 255 / 0.09);
+    --cv-line-strong: rgb(255 255 255 / 0.18);
+    --cv-line-hover: rgb(255 255 255 / 0.30);
+    --cv-ink: #eff3f8;
+    --cv-muted: #94adc9;
+    --cv-field: rgb(255 255 255 / 0.04);
+    --cv-hover: rgb(255 255 255 / 0.06);
+    --cv-accent: #ef9a68;
+    --cv-on-accent: #061526;
+    --cv-on-ink: #061526;
+    --cv-band: #061526;
+}
+
+/*
+|--------------------------------------------------------------------------
+| 3. Base
+|--------------------------------------------------------------------------
+*/
+
+.fi-body {
+    background-color: var(--cv-canvas);
+    color: var(--cv-ink);
+    /* The panel is set in the same Inter build the public site ships. */
+    font-family: var(--font-sans);
+}
+
+/* Columns of figures are compared, so they are always tabular. */
+.fi-ta-table,
+.fi-ta-summary-row,
+.fi-in-text,
+.fi-wi-stats-overview-stat-value {
+    font-variant-numeric: tabular-nums;
+}
+
+.fi-logo {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--cv-ink);
+}
+
+/* The 28px navy tile from the public header, reused as the panel mark. */
+.fi-logo-mark {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 4px;
+    background-color: var(--cv-ink);
+    color: var(--cv-on-ink);
+}
+
+/* Keyboard users get the same accent outline as the public site. */
+.fi-body a:focus-visible,
+.fi-body .fi-btn:focus-visible,
+.fi-body .fi-icon-btn:focus-visible,
+.fi-body .fi-link:focus-visible,
+.fi-body .fi-sidebar-item-btn:focus-visible,
+.fi-body .fi-topbar-item-btn:focus-visible,
+.fi-body .fi-dropdown-list-item:focus-visible {
+    outline: 2px solid var(--cv-accent);
+    outline-offset: 2px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| 4. Layout and page header
+|--------------------------------------------------------------------------
+*/
+
+/* Data tables need room, but text still needs a measure. */
+.fi-main {
+    max-width: 1600px;
+}
+
+.fi-page-header-main-ctn {
+    @apply gap-y-6 py-6;
+}
+
+.fi-page-content,
+.fi-simple-page-content {
+    @apply gap-y-6;
+}
+
+.fi-header-heading {
+    @apply text-2xl font-bold sm:text-[28px];
+    color: var(--cv-ink);
+    letter-spacing: -0.02em;
+}
+
+.fi-header-subheading {
+    @apply mt-1.5 max-w-2xl text-[15px] leading-6;
+    color: var(--cv-muted);
+}
+
+.fi-breadcrumbs {
+    color: var(--cv-muted);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 5. Sidebar
+|--------------------------------------------------------------------------
+*/
+
+/* The divider carries the structure; the sidebar itself stays flat. */
+.fi-sidebar {
+    background-color: var(--cv-panel);
+    border-inline-end: 1px solid var(--cv-line);
+}
+
+.fi-body-has-topbar .fi-sidebar-header {
+    background-color: var(--cv-panel);
+    box-shadow: none;
+    border-bottom: 1px solid var(--cv-line);
+}
+
+.fi-sidebar-header-controls::after {
+    border-color: var(--cv-line);
+}
+
+.fi-sidebar-nav {
+    @apply gap-y-6 py-6;
+}
+
+.fi-sidebar-nav-groups {
+    @apply gap-y-6;
+}
+
+.fi-sidebar-group-label {
+    @apply text-[11px] font-semibold tracking-[0.08em] uppercase;
+    color: var(--cv-muted);
+}
+
+.fi-sidebar-item-btn {
+    @apply gap-x-2.5 px-2.5 py-2;
+}
+
+.fi-sidebar-item-btn > .fi-icon,
+.fi-sidebar-group-btn .fi-icon {
+    color: var(--cv-muted);
+}
+
+.fi-sidebar-item-label {
+    color: var(--cv-ink);
+}
+
+/* Hover feedback, but never over the navy pill — its label is white. */
+.fi-sidebar-item.fi-sidebar-item-has-url:not(.fi-active):not(.fi-sidebar-item-has-active-child-items) > .fi-sidebar-item-btn:hover {
+    background-color: var(--cv-hover);
+}
+
+/*
+ * The current module is a navy pill, exactly like the customer account
+ * sidebar, so staff never have to guess where they are.
+ */
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+    background-color: var(--cv-ink);
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn > .fi-icon,
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn > .fi-sidebar-item-label {
+    color: var(--cv-on-ink);
+}
+
+.fi-sidebar-footer {
+    border-color: var(--cv-line);
+}
+
+.fi-sidebar-database-notifications-btn-label {
+    color: var(--cv-ink);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 6. Topbar
+|--------------------------------------------------------------------------
+*/
+
+.fi-topbar {
+    background-color: var(--cv-panel);
+    box-shadow: none;
+    border-bottom: 1px solid var(--cv-line);
+}
+
+.fi-topbar-item-label {
+    color: var(--cv-ink);
+}
+
+.fi-topbar-item-btn > .fi-icon {
+    color: var(--cv-muted);
+}
+
+.fi-topbar-item-btn:hover {
+    background-color: var(--cv-hover);
+}
+
+.fi-topbar-item.fi-active .fi-topbar-item-label {
+    color: var(--cv-accent);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 7. Sections, tables and every other card surface
+|--------------------------------------------------------------------------
+|
+| One recipe for all of them: panel surface, hairline border, no elevation.
+| `--cv-panel` inverts in dark mode, so it is written once.
+|
+| A real border rather than an inset ring is used deliberately — the ring is
+| painted with `box-shadow`, which the same rule neutralises.
+|
+*/
+
+.fi-section:not(.fi-section-not-contained):not(.fi-aside):not(.fi-secondary) {
+    background-color: var(--cv-panel);
+    border: 1px solid var(--cv-line);
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+.fi-section:not(.fi-section-not-contained).fi-aside > .fi-section-content-ctn {
+    background-color: var(--cv-panel);
+    border: 1px solid var(--cv-line);
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+.fi-section:not(.fi-section-not-contained) > .fi-section-content-ctn > .fi-section-footer,
+.fi-section:not(.fi-section-not-contained).fi-section-has-header:not(.fi-collapsed) > .fi-section-content-ctn {
+    border-color: var(--cv-line);
+}
+
+.fi-section-header-heading {
+    @apply text-[15px] leading-6 font-semibold;
+    color: var(--cv-ink);
+}
+
+.fi-section-header-description {
+    color: var(--cv-muted);
+}
+
+.fi-ta-ctn {
+    background-color: var(--cv-panel);
+    border: 1px solid var(--cv-line);
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+.fi-ta-header,
+.fi-ta-header-toolbar,
+.fi-ta-filters-below-content,
+.fi-ta-filters-above-content-ctn,
+.fi-ta-ctn .fi-pagination {
+    border-color: var(--cv-line);
+}
+
+.fi-ta-header-heading,
+.fi-ta-filters-heading {
+    color: var(--cv-ink);
+}
+
+/* Header cells read as column labels: small, uppercase, quiet. */
+.fi-ta-header-cell {
+    color: var(--cv-muted);
+}
+
+.fi-ta-header-cell :is(span, button) {
+    @apply text-xs font-semibold tracking-[0.06em] uppercase;
+}
+
+.fi-ta-header-description {
+    color: var(--cv-muted);
+}
+
+.fi-ta-row {
+    border-color: var(--cv-line);
+}
+
+.fi-ta-row:hover,
+.fi-ta-row.fi-clickable:hover {
+    background-color: var(--cv-hover);
+}
+
+.fi-ta-cell {
+    color: var(--cv-ink);
+}
+
+.fi-ta-reorder-indicator,
+.fi-ta-selection-indicator,
+.fi-ta-filter-indicators {
+    background-color: var(--cv-hover);
+    border-color: var(--cv-line);
+    color: var(--cv-ink);
+}
+
+/* The footer summary reads as a band, not as another row of data. */
+.fi-ta-summary-row {
+    background-color: var(--cv-canvas);
+    border-color: var(--cv-line);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 8. Forms, inputs and controls
+|--------------------------------------------------------------------------
+*/
+
+.fi-input-wrp {
+    background-color: var(--cv-field);
+    border: 1px solid var(--cv-line-strong);
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+.fi-input-wrp:hover {
+    border-color: var(--cv-line-hover);
+}
+
+/*
+ * Focus echoes the public site's fields: a solid ink border with a single soft
+ * ring, rather than a coloured halo.
+ */
+.fi-input-wrp:focus-within {
+    border-color: var(--cv-ink);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--cv-ink) 12%, transparent);
+}
+
+.fi-input-wrp.fi-invalid,
+.fi-input-wrp.fi-invalid:focus-within {
+    border-color: var(--danger-600);
+}
+
+.fi-input-wrp.fi-invalid:focus-within {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--danger-600) 18%, transparent);
+}
+
+.fi-input-wrp .fi-input-wrp-prefix:not(.fi-inline),
+.fi-input-wrp .fi-input-wrp-suffix:not(.fi-inline) {
+    border-color: var(--cv-line);
+}
+
+.fi-input-wrp .fi-input,
+.fi-input-wrp .fi-select-input,
+.fi-input-wrp input,
+.fi-input-wrp textarea,
+.fi-input-wrp select {
+    color: var(--cv-ink);
+}
+
+.fi-input::placeholder,
+.fi-textarea::placeholder {
+    color: var(--cv-muted);
+}
+
+/*
+ * Selects.
+ *
+ * The native arrow is removed and drawn again through a mask, so one chevron
+ * follows the text colour in both the light and the dark panel. Where the
+ * browser offers the customisable picker, the list itself is ours: a rounded
+ * panel with roomy rows and the current choice tinted with the panel accent.
+ * Anywhere else the native list is kept, which stays keyboard- and
+ * screen-reader-native.
+ */
+.fi-input-wrp:has(select) {
+    position: relative;
+}
+
+.fi-input-wrp select,
+select.fi-select-input {
+    appearance: none;
+    padding-inline-end: 2.25rem;
+}
+
+.fi-input-wrp:has(select)::after {
+    content: '';
+    position: absolute;
+    inset-inline-end: 0.7rem;
+    top: 50%;
+    width: 1rem;
+    height: 1rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    background-color: var(--cv-muted);
+    -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / 1rem no-repeat;
+    mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / 1rem no-repeat;
+    transition: transform 160ms ease;
+}
+
+.fi-input-wrp:has(select):focus-within::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+select.fi-select-input option,
+select.fi-select-input optgroup {
+    font: inherit;
+    background-color: var(--cv-field);
+    color: var(--cv-ink);
+}
+
+select.fi-select-input option:checked {
+    font-weight: 600;
+}
+
+@supports (appearance: base-select) {
+    select.fi-select-input,
+    select.fi-select-input::picker(select) {
+        appearance: base-select;
+    }
+
+    select.fi-select-input::picker-icon {
+        color: var(--cv-muted);
+        transition: transform 160ms ease;
+    }
+
+    select.fi-select-input:open::picker-icon {
+        transform: rotate(180deg);
+    }
+
+    select.fi-select-input::picker(select) {
+        margin-block: 6px;
+        padding: 4px;
+        border: 1px solid var(--cv-line-strong);
+        border-radius: 8px;
+        background: var(--cv-field);
+        box-shadow: 0 12px 24px -16px rgb(6 21 38 / 0.45);
+        opacity: 0;
+        transform: translateY(-4px);
+        transition: opacity 140ms ease, transform 140ms ease,
+            display 140ms allow-discrete, overlay 140ms allow-discrete;
+    }
+
+    select.fi-select-input:open::picker(select) {
+        opacity: 1;
+        transform: none;
+    }
+
+    select.fi-select-input option {
+        border-radius: 4px;
+        padding: 8px 10px;
+    }
+
+    select.fi-select-input option:hover,
+    select.fi-select-input option:focus-visible {
+        background-color: var(--cv-hover);
+    }
+
+    select.fi-select-input option:checked {
+        background-color: color-mix(in oklab, var(--cv-accent) 14%, transparent);
+    }
+
+    select.fi-select-input option::checkmark {
+        color: var(--cv-accent);
+    }
+}
+
+.fi-fo-field-wrp-label,
+.fi-fo-field-wrp > label {
+    @apply text-sm font-medium;
+    color: var(--cv-ink);
+}
+
+.fi-fo-field-wrp-helper-text,
+.fi-fo-field-wrp-hint {
+    color: var(--cv-muted);
+}
+
+/* Choice controls inherit the accent instead of the browser default. */
+.fi-input[type='checkbox'],
+.fi-input[type='radio'] {
+    accent-color: var(--cv-accent);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 9. Buttons, badges and links
+|--------------------------------------------------------------------------
+|
+| Filament already draws default buttons with a 1px ring, so only the radius
+| token and the weight are adjusted here to match the public site.
+|
+*/
+
+.fi-btn {
+    @apply text-sm font-semibold;
+}
+
+.fi-btn.fi-color-primary {
+    color: var(--cv-on-accent);
+}
+
+.fi-link {
+    color: var(--cv-accent);
+}
+
+.fi-badge {
+    @apply rounded-[3px] px-2 py-1 text-xs font-semibold;
+    box-shadow: none;
+}
+
+.fi-pagination {
+    color: var(--cv-ink);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 10. Stats and charts
+|--------------------------------------------------------------------------
+*/
+
+.fi-wi-stats-overview-stat {
+    background-color: var(--cv-panel);
+    border: 1px solid var(--cv-line);
+    border-radius: 6px;
+    box-shadow: none;
+    @apply p-5;
+}
+
+.fi-wi-stats-overview-stat-value {
+    @apply text-[26px] font-bold;
+    color: var(--cv-ink);
+    letter-spacing: -0.02em;
+}
+
+.fi-wi-stats-overview-stat-label {
+    @apply text-xs font-medium tracking-[0.06em] uppercase;
+    color: var(--cv-muted);
+}
+
+.fi-wi-stats-overview-stat-description {
+    color: var(--cv-muted);
+}
+
+/*
+ * Chart.js paints onto a canvas, so a chart is themed by changing the computed
+ * colour of the elements Filament reads its palette from.
+ */
+.fi-wi-chart {
+    --chart-tooltip-border-width: 1px;
+}
+
+.fi-wi-chart-grid-color {
+    color: var(--cv-line);
+}
+
+.fi-wi-chart-text-color {
+    color: var(--cv-muted);
+}
+
+.fi-wi-chart-bg-color {
+    color: var(--cv-canvas);
+}
+
+.fi-wi-chart-border-color {
+    color: var(--cv-accent);
+}
+
+.fi-wi-chart-tooltip-bg-color {
+    color: rgb(6 21 38 / 0.94);
+}
+
+.fi-wi-chart-tooltip-text-color {
+    color: rgb(255 255 255);
+}
+
+.fi-wi-chart-tooltip-border-color {
+    color: rgb(255 255 255 / 0.14);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 11. Overlays: modals, dropdowns, notifications
+|--------------------------------------------------------------------------
+*/
+
+.fi-modal-window {
+    background-color: var(--cv-panel);
+    border: 1px solid var(--cv-line);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+}
+
+.fi-modal-heading {
+    color: var(--cv-ink);
+}
+
+.fi-modal-description {
+    color: var(--cv-muted);
+}
+
+.fi-dropdown-panel {
+    background-color: var(--cv-panel);
+    border: 1px solid var(--cv-line);
+    border-radius: 6px;
+    box-shadow: var(--shadow-md);
+}
+
+.fi-dropdown-list-item {
+    color: var(--cv-ink);
+}
+
+.fi-dropdown-list-item:hover {
+    background-color: var(--cv-hover);
+}
+
+.fi-no-notification {
+    background-color: var(--cv-panel);
+    border: 1px solid var(--cv-line);
+    border-radius: 6px;
+    box-shadow: var(--shadow-md);
+    color: var(--cv-ink);
+}
+
+.fi-empty-state-heading {
+    color: var(--cv-ink);
+}
+
+.fi-empty-state-description {
+    color: var(--cv-muted);
+}
+
+/*
+|--------------------------------------------------------------------------
+| 12. Sign-in screen
+|--------------------------------------------------------------------------
+|
+| Staff meet the same navy band as the public site's masthead, with the form
+| on a single panel above it.
+|
+*/
+
+.fi-simple-layout {
+    background-color: var(--cv-band);
+}
+
+.fi-simple-layout-header,
+.fi-simple-layout-header .fi-icon-btn,
+.fi-simple-layout-header a {
+    color: rgb(255 255 255 / 0.72);
+}
+
+.fi-simple-layout-header .fi-icon-btn:hover,
+.fi-simple-layout-header a:hover {
+    color: #ffffff;
+    background-color: rgb(255 255 255 / 0.1);
+}
+
+.fi-simple-main {
+    background-color: var(--cv-panel);
+    border: 1px solid var(--cv-line);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+}
+
+.fi-simple-header-heading {
+    color: var(--cv-ink);
+}
+
+.fi-simple-header-subheading {
+    color: var(--cv-muted);
+}

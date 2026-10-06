@@ -29,12 +29,15 @@ const RADIUS = 1;
 const DEG = Math.PI / 180;
 
 const MODE_COLORS = {
-    air: '#b5e3df',
-    express: '#f1bd79',
-    sea: '#71b9b4',
-    road: '#e98156',
-    route: '#d7522d',
+    air: '#7fb3e0',
+    express: '#ef9a68',
+    sea: '#4a8ab5',
+    road: '#e2703a',
+    route: '#e2703a',
 };
+
+/** Radius of the atmosphere shell. The camera fit below keeps it fully in frame. */
+const ATMOSPHERE_RADIUS = 1.12;
 
 /** lat/lon in degrees to a point on the sphere (three-globe convention). */
 export function toVector(lat, lon, radius = RADIUS) {
@@ -75,7 +78,7 @@ function dotTexture() {
 export class Globe {
     constructor(container, options = {}) {
         this.container = container;
-        this.options = { autoRotate: true, interactive: true, dotColor: '#89b7b2', ...options };
+        this.options = { autoRotate: true, interactive: true, dotColor: '#5d7fa6', ...options };
         this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.lanes = [];
         this.markers = [];
@@ -110,20 +113,20 @@ export class Globe {
     buildSphere() {
         const sphere = new Mesh(
             new SphereGeometry(RADIUS * 0.995, 64, 64),
-            new MeshBasicMaterial({ color: new Color('#102630'), transparent: true, opacity: 0.94 }),
+            new MeshBasicMaterial({ color: new Color('#0b1f36'), transparent: true, opacity: 0.96 }),
         );
         this.sphere = sphere;
         this.root.add(sphere);
 
         // Fresnel atmosphere glow.
         const atmosphere = new Mesh(
-            new SphereGeometry(RADIUS * 1.18, 64, 64),
+            new SphereGeometry(RADIUS * ATMOSPHERE_RADIUS, 64, 64),
             new ShaderMaterial({
                 transparent: true,
                 side: BackSide,
                 blending: AdditiveBlending,
                 depthWrite: false,
-                uniforms: { glowColor: { value: new Color('#4bbab3') } },
+                uniforms: { glowColor: { value: new Color('#3b74a8') } },
                 vertexShader: `
                     varying vec3 vNormal;
                     void main() {
@@ -134,7 +137,7 @@ export class Globe {
                     uniform vec3 glowColor;
                     varying vec3 vNormal;
                     void main() {
-                        float intensity = pow(0.62 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.2);
+                        float intensity = pow(0.5 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 4.0);
                         gl_FragColor = vec4(glowColor, 1.0) * intensity;
                     }`,
             }),
@@ -157,7 +160,7 @@ export class Globe {
             geometry,
             new PointsMaterial({
                 color: new Color(this.options.dotColor),
-                size: 0.022,
+                size: 0.025,
                 map: dotTexture(),
                 transparent: true,
                 alphaTest: 0.3,
@@ -168,7 +171,7 @@ export class Globe {
         this.root.add(points);
     }
 
-    addHub(lat, lon, color = '#d7522d') {
+    addHub(lat, lon, color = '#e2703a') {
         const position = toVector(lat, lon, RADIUS * 1.004);
         const group = new Group();
         group.position.copy(position);
@@ -228,11 +231,11 @@ export class Globe {
     showRoute(origin, destination, current = null) {
         this.clearRoute();
         const lane = this.addLane(origin, destination, 'route', { emphasis: true });
-        const a = this.addHub(origin.lat, origin.lon, '#83d6cf');
-        const b = this.addHub(destination.lat, destination.lon, '#d7522d');
+        const a = this.addHub(origin.lat, origin.lon, '#7fb3e0');
+        const b = this.addHub(destination.lat, destination.lon, '#e2703a');
         const objects = [lane.line, lane.head, a, b];
         if (current) {
-            const c = this.addHub(current.lat, current.lon, '#ffd166');
+            const c = this.addHub(current.lat, current.lon, '#f5bb9a');
             objects.push(c);
         }
         this.route = { objects };
@@ -264,8 +267,22 @@ export class Globe {
         this.autoRotatePausedUntil = performance.now() + 6000;
     }
 
+    /**
+     * Closest distance at which the atmosphere shell still fits inside the frame.
+     * Without this the glow is cut off by the canvas edges, which reads as a
+     * rectangular frame around the globe.
+     */
+    fitDistance() {
+        const halfFov = (this.camera.fov * DEG) / 2;
+        const vertical = ATMOSPHERE_RADIUS / Math.tan(halfFov);
+        const horizontal = vertical / Math.max(this.camera.aspect, 0.2);
+
+        return Math.max(vertical, horizontal) * 1.04;
+    }
+
     zoom(delta) {
-        this.targetDistance = Math.max(1.7, Math.min(4.5, this.targetDistance + delta));
+        const min = this.fitDistance();
+        this.targetDistance = Math.max(min, Math.min(min + 1.6, this.targetDistance + delta));
     }
 
     bindEvents() {
@@ -342,6 +359,17 @@ export class Globe {
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(width, height, false);
+
+        // Keep the globe (and its atmosphere) inside the frame at every size.
+        const min = this.fitDistance();
+        if (this.distance < min) {
+            this.distance = min;
+        }
+        if (this.targetDistance < min) {
+            this.targetDistance = min;
+        }
+        this.minDistance = min;
+        this.maxDistance = min + 1.6;
     }
 
     start() {

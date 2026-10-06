@@ -13,11 +13,12 @@ use App\Models\Shipment;
 use App\Models\TransportMode;
 use App\Services\Content\MarkdownRenderer;
 use App\Services\Settings;
+use App\Services\Pricing\TransitWindows;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
 {
-    public function __invoke(MarkdownRenderer $markdown, Settings $settings): View
+    public function __invoke(MarkdownRenderer $markdown, Settings $settings, TransitWindows $transit): View
     {
         $locale = app()->getLocale();
 
@@ -32,6 +33,10 @@ class HomeController extends Controller
             'faqs' => Faq::query()->where('locale', $locale)->where('is_published', true)->orderBy('sort_order')->limit(5)->get()
                 ->each(fn (Faq $faq) => $faq->setAttribute('html', $markdown->toHtml($faq->answer))),
             // Example numbers are real, released demo shipments, never invented (R6).
+            'transit' => $transit->labels(),
+            // Commitment figures come from settings, not from the template.
+            'reviewTargetMinutes' => $settings->int('review_target_minutes'),
+            'staffedHours' => $settings->get('staffed_hours'),
             'examples' => Shipment::query()->whereNotNull('released_at')->whereNotNull('tracking_number')->oldest('id')->limit(2)->pluck('tracking_number'),
         ]);
     }

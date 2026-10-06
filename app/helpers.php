@@ -81,3 +81,49 @@ if (! function_exists('js_strings')) {
         return $strings;
     }
 }
+
+if (! function_exists('media')) {
+    /**
+     * Photography entry from config/media.php, resolved to asset URLs with
+     * translated alt text and a ready-made srcset for the hero.
+     *
+     * @return array{webp: string, jpg: string, srcset: string, sizes: string|null, width: int, height: int, alt: string, caption: string|null}
+     */
+    function media(string $key): array
+    {
+        $item = config('media.'.$key);
+
+        if (! is_array($item)) {
+            throw new InvalidArgumentException('Unknown media key: '.$key);
+        }
+
+        $width = (int) ($item['width'] ?? 1400);
+
+        /*
+         * Responsive ladder: the narrow variants come first, so the browser can
+         * pick the smallest file that covers the slot the layout gives the photo.
+         */
+        $srcset = '';
+
+        foreach ((array) ($item['variants'] ?? []) as $variant) {
+            $variant = (int) $variant;
+
+            if ($variant > 0 && $variant < $width) {
+                $srcset .= asset(preg_replace('/\.webp$/', '-'.$variant.'.webp', $item['webp'])).' '.$variant.'w, ';
+            }
+        }
+
+        $srcset .= asset($item['webp']).' '.$width.'w';
+
+        return [
+            'webp' => asset($item['webp']),
+            'jpg' => asset($item['jpg']),
+            'srcset' => $srcset,
+            'sizes' => $item['sizes'] ?? null,
+            'width' => $width,
+            'height' => (int) ($item['height'] ?? 768),
+            'alt' => __($item['alt']),
+            'caption' => isset($item['caption']) ? __($item['caption']) : null,
+        ];
+    }
+}

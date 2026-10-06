@@ -15,6 +15,7 @@ use App\Services\Geocoding\MapboxGeocoder;
 use App\Services\Geocoding\OpenCageGeocoder;
 use App\Services\Notifications\MailChannel;
 use App\Services\Payments\ManualProofGateway;
+use App\Services\Pricing\TransitWindows;
 use App\Services\Settings;
 use App\Services\Tracking\AfterShipTrackingProvider;
 use App\Services\Tracking\NullTrackingProvider;
@@ -23,6 +24,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
@@ -65,6 +67,12 @@ class AppServiceProvider extends ServiceProvider
             $rule = Password::min(10)->letters()->mixedCase()->numbers()->max(128);
 
             return $this->app->environment('testing') ? $rule : $rule->uncompromised();
+        });
+
+        // The header appears on every public page and lists a transit window per
+        // service, so it reads the published windows instead of carrying literals.
+        View::composer('partials.header', function ($view): void {
+            $view->with('transit', app(TransitWindows::class)->labels());
         });
 
         $this->configureRateLimiting();

@@ -19,8 +19,8 @@ class InitialsAvatarProvider implements AvatarProvider
             ->trim()->explode(' ')->filter()->take(2)
             ->map(fn (string $part) => mb_strtoupper(mb_substr($part, 0, 1)))->implode('');
 
-        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#0a1628"/>'
-            .'<text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="26" font-weight="700" fill="#ff8a4c">'
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#0b1f36"/>'
+            .'<text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="26" font-weight="700" fill="#ef9a68">'
             .htmlspecialchars($initials, ENT_XML1).'</text></svg>';
 
         return 'data:image/svg+xml;base64,'.base64_encode($svg);

@@ -6,8 +6,8 @@
             @csrf
             <div>
                 <label for="email" class="field-label">{{ __('Email') }}</label>
-                <input id="email" name="email" type="email" value="{{ old('email') }}" required maxlength="190" autocomplete="email" class="field">
-                @error('email')<p class="field-error">{{ $message }}</p>@enderror
+                <input id="email" name="email" type="email" value="{{ old('email') }}" required maxlength="190" autocomplete="email" class="field" @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>
+                @error('email')<p class="field-error" id="email-error">{{ $message }}</p>@enderror
             </div>
             <x-captcha :challenge="$captcha" />
             <button type="submit" class="btn-primary w-full">{{ __('Send reset link') }}</button>
