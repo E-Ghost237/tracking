@@ -86,7 +86,7 @@
                     @foreach ($methods as $method)
                         <button type="button" data-method="{{ $method['id'] }}" @click="select($el.dataset.method)" :disabled="selecting"
                                 class="group flex items-center gap-4 rounded-2xl border-2 bg-white p-4 text-left transition hover:-translate-y-0.5 disabled:opacity-60"
-                                :class="selected === '{{ $method['id'] }}' ? 'border-brand-500 shadow-[0_10px_30px_-15px_rgb(255_107_44/0.6)]' : 'border-line hover:border-slate-300'">
+                                :class="selected === '{{ $method['id'] }}' ? 'border-brand-500 shadow-[0_10px_30px_-15px_rgb(197_71_39/0.55)]' : 'border-line hover:border-slate-300'">
                             <span class="grid size-11 shrink-0 place-items-center rounded-xl transition" :class="selected === '{{ $method['id'] }}' ? 'bg-brand-500 text-white' : 'bg-surface text-ink-900'">
                                 <x-lucide :name="$icons[$method['kind']] ?? 'credit-card'" class="size-5" />
                             </span>

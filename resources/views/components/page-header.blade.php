@@ -1,14 +1,13 @@
 @props(['eyebrow' => null, 'title', 'lead' => null, 'icon' => null])
-<section class="relative overflow-hidden border-b border-line bg-gradient-to-b from-surface to-white">
-    <div class="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-brand-500/10 blur-3xl"></div>
-    <div class="pointer-events-none absolute -bottom-32 left-10 size-72 rounded-full bg-route-400/10 blur-3xl"></div>
-    <div class="container-page relative py-14 sm:py-16">
+<section class="page-masthead relative isolate overflow-hidden border-b border-line">
+    <span class="pointer-events-none absolute inset-y-0 left-0 w-1 bg-brand-500" aria-hidden="true"></span>
+    <div class="container-page relative py-14 sm:py-16 lg:py-20">
         @if ($eyebrow)
-            <p class="eyebrow">@if ($icon)<x-lucide :name="$icon" class="size-4" />@endif {{ $eyebrow }}</p>
+            <p class="eyebrow eyebrow-rule">@if ($icon)<x-lucide :name="$icon" class="size-4" />@endif {{ $eyebrow }}</p>
         @endif
-        <h1 class="mt-3 max-w-3xl text-3xl font-extrabold sm:text-5xl">{{ $title }}</h1>
+        <h1 class="editorial-title mt-4 max-w-4xl text-4xl leading-[1.02] text-ink-900 sm:text-6xl">{{ $title }}</h1>
         @if ($lead)
-            <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">{{ $lead }}</p>
+            <p class="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">{{ $lead }}</p>
         @endif
         {{ $slot }}
     </div>

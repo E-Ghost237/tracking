@@ -37,7 +37,7 @@
                     @if ($claim->decision)<p class="mt-2 text-sm text-slate-600">{{ $claim->decision }}</p>@endif
                     <ol class="mt-3 space-y-1 text-xs text-slate-500">
                         @foreach ($claim->logs as $log)
-                            <li>{{ $log->created_at?->translatedFormat('j M Y') }} — {{ __(\Illuminate\Support\Str::headline($log->action)) }}</li>
+                            <li>{{ $log->created_at?->translatedFormat('j M Y') }} · {{ __(\Illuminate\Support\Str::headline($log->action)) }}</li>
                         @endforeach
                     </ol>
                 </article>

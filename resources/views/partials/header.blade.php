@@ -13,8 +13,8 @@
         class="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
         :class="scrolled || open ? 'bg-white/90 shadow-[0_1px_0_rgb(10_22_40/0.06)] backdrop-blur-xl {{ $dark ? 'is-solid' : '' }}' : '{{ $dark ? 'bg-transparent' : 'bg-white/90 backdrop-blur-xl shadow-[0_1px_0_rgb(10_22_40/0.06)]' }}'">
     <div class="container-page flex h-[72px] items-center justify-between gap-6">
-        <a href="{{ lroute('home') }}" class="group flex items-center gap-2.5" aria-label="{{ config('platform.brand.name') }} — {{ __('Home') }}">
-            <span class="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-[0_6px_16px_-6px_rgb(255_107_44/0.8)] transition group-hover:rotate-[-6deg]">
+        <a href="{{ lroute('home') }}" class="group flex items-center gap-2.5" aria-label="{{ config('platform.brand.name') }}, {{ __('Home') }}">
+            <span class="grid size-9 place-items-center rounded-xl bg-brand-500 text-white shadow-[0_6px_16px_-6px_rgb(197_71_39/0.65)] transition group-hover:rotate-[-4deg]">
                 <x-lucide name="navigation" class="size-[18px] rotate-45" />
             </span>
             <span class="font-display text-[19px] font-extrabold tracking-tight"

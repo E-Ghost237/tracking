@@ -13,7 +13,7 @@
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;">
                     <tr>
                         <td style="padding:0 8px 18px;">
-                            <span style="display:inline-block;width:32px;height:32px;border-radius:9px;background:#ff6b2c;vertical-align:middle;"></span>
+                            <span style="display:inline-block;width:32px;height:32px;border-radius:9px;background:#c54727;vertical-align:middle;"></span>
                             <span style="font-size:20px;font-weight:800;color:#0a1628;vertical-align:middle;margin-left:8px;">{{ config('platform.brand.name') }}</span>
                         </td>
                     </tr>

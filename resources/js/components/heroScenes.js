@@ -1,14 +1,26 @@
 import { readJson } from '../lib/api';
 
+const POSTERS = {
+    air: '/images/freight-air.jpg',
+    sea: '/images/freight-sea.jpg',
+    road: '/images/freight-road.jpg',
+};
+const SCENES = ['air', 'sea', 'road'];
+const ROTATION_MS = 6800;
+
 /**
- * Hero scene switcher (FR-01, FR-02, FR-05). The video is attached only after first paint,
- * and never on small screens, with data saver, or with reduced motion: the poster stays.
+ * The home hero moves slowly through air, sea and road photography. Optional
+ * CMS video still takes priority when supplied. Autoplay pauses for reduced
+ * motion, a hidden tab, hover and keyboard focus.
  */
 export default () => ({
     scene: 'air',
     media: {},
     videoAllowed: false,
     hasVideo: false,
+    rotationTimer: null,
+    rotationPaused: false,
+    visibilityHandler: null,
 
     init() {
         this.media = readJson('hero-media', {}) || {};
@@ -24,16 +36,72 @@ export default () => ({
         } else {
             window.addEventListener('load', () => setTimeout(attach, 300), { once: true });
         }
+
+        if (!reduced) {
+            this.startRotation();
+        }
+        this.visibilityHandler = () => {
+            if (document.hidden) {
+                this.stopRotation();
+            } else {
+                this.startRotation();
+            }
+        };
+        document.addEventListener('visibilitychange', this.visibilityHandler);
     },
 
-    poster() {
-        return this.media[this.scene]?.poster || '';
+    destroy() {
+        this.stopRotation();
+        if (this.visibilityHandler) {
+            document.removeEventListener('visibilitychange', this.visibilityHandler);
+        }
+    },
+
+    poster(scene = this.scene) {
+        return this.media[scene]?.poster || POSTERS[scene] || POSTERS.air;
     },
 
     setScene(scene) {
+        if (!SCENES.includes(scene)) return;
+
         this.scene = scene;
         this.loadVideo();
+        this.resetRotation();
         window.dispatchEvent(new CustomEvent('hero:scene', { detail: { scene } }));
+    },
+
+    nextScene() {
+        const current = SCENES.indexOf(this.scene);
+        this.setScene(SCENES[(current + 1) % SCENES.length]);
+    },
+
+    startRotation() {
+        this.stopRotation();
+        if (this.rotationPaused || document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        this.rotationTimer = window.setInterval(() => this.nextScene(), ROTATION_MS);
+    },
+
+    stopRotation() {
+        if (this.rotationTimer) {
+            window.clearInterval(this.rotationTimer);
+            this.rotationTimer = null;
+        }
+    },
+
+    resetRotation() {
+        this.stopRotation();
+        this.startRotation();
+    },
+
+    pauseRotation() {
+        this.rotationPaused = true;
+        this.stopRotation();
+    },
+
+    resumeRotation() {
+        if (this.$root.matches(':hover') || this.$root.contains(document.activeElement)) return;
+        this.rotationPaused = false;
+        this.startRotation();
     },
 
     loadVideo() {
@@ -53,7 +121,7 @@ export default () => ({
                 video.appendChild(source);
             }
         });
-        video.poster = sources.poster || '';
+        video.poster = sources.poster || this.poster();
         video.load();
         video.play().then(() => {
             this.hasVideo = true;
