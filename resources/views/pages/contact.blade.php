@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => __('Contact'), 'description' => __('Contact our team in English or French.')])
 
 @section('content')
-    <x-page-header :eyebrow="__('Contact')" icon="mail" :title="__('Tell us what you need help with.')" :lead="__('Share a little context and, if you have one, include your order or tracking number. A member of our support team will read your message and reply in English or French, usually within one business day.')" />
+    <x-page-header :eyebrow="__('Contact')" icon="mail" :title="__('Tell us what you need help with.')" :lead="__('Share a little context and, if you have one, include your order or tracking number. A member of our support team will read your message and reply in English or French, usually within one business day. The more detail you provide up front, the faster we can find the right answer for your situation.')" />
 
     <div class="container-page grid gap-10 py-14 lg:grid-cols-3">
         <form method="POST" action="{{ lroute('contact.store') }}" class="card space-y-5 p-6 sm:p-8 lg:col-span-2">
@@ -57,14 +57,18 @@
                     <li class="flex items-center gap-3"><x-lucide name="mail" class="size-5 text-brand-500" /> <a class="link" href="mailto:{{ config('platform.brand.support_email') }}">{{ config('platform.brand.support_email') }}</a></li>
                     <li class="flex items-center gap-3"><x-lucide name="phone" class="size-5 text-brand-500" /> {{ config('platform.brand.support_phone') }}</li>
                     @if (config('platform.brand.whatsapp'))
-                        <li class="flex items-center gap-3"><x-lucide name="message-circle" class="size-5 text-brand-500" /> <a class="link" href="https://wa.me/{{ preg_replace('/\D/', '', config('platform.brand.whatsapp')) }}" rel="noopener noreferrer" target="_blank">WhatsApp</a></li>
+                        <li class="flex items-center gap-3"><x-lucide name="message-circle" class="size-5 text-brand-500" /> <a class="link" href="https://wa.me/{{ preg_replace('/\\D/', '', config('platform.brand.whatsapp')) }}" rel="noopener noreferrer" target="_blank">WhatsApp</a></li>
                     @endif
                     <li class="flex items-start gap-3"><x-lucide name="map-pin" class="size-5 shrink-0 text-brand-500" /> {{ config('platform.brand.address') }}</li>
                 </ul>
             </div>
             <div class="rounded-[var(--radius-card)] border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900">
                 <p class="flex items-center gap-2 font-semibold"><x-lucide name="shield-check" class="size-5" /> {{ __('Stay safe') }}</p>
-                <p class="mt-2 leading-6">{{ __('We never ask for payment by phone, social media or email links. Payment details only appear in your account, on your own order.') }}</p>
+                <p class="mt-2 leading-6">{{ __('We never ask for payment by phone, social media or email links. Payment details only appear in your account, on your own order. If someone claims to be from our team and asks you to pay differently, contact us directly using the details on this page.') }}</p>
+            </div>
+            <div class="rounded-[var(--radius-card)] border border-line bg-surface p-6 text-sm text-slate-700">
+                <p class="font-display font-bold text-ink-900">{{ __('Response times') }}</p>
+                <p class="mt-2 leading-6">{{ __('We aim to reply to all messages within one business day. Messages sent on weekends or outside business hours are usually answered on the next working day. For urgent shipment issues, include your tracking number so we can look up the details quickly.') }}</p>
             </div>
         </aside>
     </div>

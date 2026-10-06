@@ -9,7 +9,7 @@
         });
     @endphp
 
-    <x-page-header :eyebrow="__('Service notices')" icon="triangle-alert" :title="__('Updates that may affect your route.')" :lead="__('This page collects current notices from our operations team, including carrier delays, weather disruptions and changes to a service. Check back before booking if your delivery date is important.')" />
+    <x-page-header :eyebrow="__('Service notices')" icon="triangle-alert" :title="__('Updates that may affect your route.')" :lead="__('This page collects current notices from our operations team, including carrier delays, weather disruptions and changes to a service. Check back before booking if your delivery date is important. We update this page as conditions change, so a quick look here can save surprises later.')" />
     <div class="container-page py-14">
         @forelse ($visibleAlerts as $alert)
             <article class="card mb-4 flex gap-4 p-6">

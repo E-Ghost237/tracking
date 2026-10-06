@@ -2,29 +2,29 @@
     $content = [
         'air' => [
             'plane', __('Air freight'), __('For parcels that have a little less time to spare.'),
-            __('Air freight suits shipments where a shorter journey matters more than the lowest price per kilogram. It is a practical option for parcels, business samples and stock that needs to reach its destination on a tighter schedule.'),
-            __('We plan the shipment around scheduled air capacity, then coordinate the documentation, customs steps and local delivery handoff. You can follow the progress from collection through to the final scan.'),
+            __('Air freight suits shipments where a shorter journey matters more than the lowest price per kilogram. It is a practical option for parcels, business samples and stock that needs to reach its destination on a tighter schedule. Whether you are sending important documents, high-value samples or time-critical inventory, air freight keeps your goods moving at the speed commercial aviation provides.'),
+            __('We plan the shipment around scheduled air capacity, then coordinate the documentation, customs steps and local delivery handoff. You can follow the progress from collection through to the final scan, with updates at each key stage of the journey.'),
             'images/freight-air.jpg', __('Cargo aircraft climbing above an international airport at dusk'), __('3–7 days'), __('Parcels, samples and time-sensitive stock'),
             [__('A clear estimate before you book'), __('Updates at key handoffs'), __('Customs documentation guidance')],
         ],
         'sea' => [
             'ship', __('Sea freight'), __('More room for the things that make a long journey worthwhile.'),
-            __('When your goods are heavy, bulky or moving on a planned schedule, shared container space can be a more economical choice than air. It is often used for furniture, equipment and regular business stock.'),
-            __('Your shipment is consolidated with other eligible cargo before departure. We coordinate export and import documentation, share progress updates while it is in transit and arrange the next delivery step once it reaches port.'),
+            __('When your goods are heavy, bulky or moving on a planned schedule, shared container space can be a more economical choice than air. It is often used for furniture, equipment and regular business stock moving between continents. Sea freight works best when you can plan ahead and are not working against a tight delivery deadline.'),
+            __('Your shipment is consolidated with other eligible cargo before departure. We coordinate export and import documentation, share progress updates while it is in transit and arrange the next delivery step once it reaches port. The process is designed to keep your goods moving smoothly from origin to final destination.'),
             'images/freight-sea.jpg', __('Container vessel travelling toward a port at sunrise'), __('25–45 days'), __('Furniture, equipment and planned stock'),
             [__('Shared container space for eligible goods'), __('A lower cost per kilogram on larger loads'), __('A useful option when delivery is not urgent')],
         ],
         'road' => [
             'truck', __('Road freight'), __('A direct option for supported journeys over land.'),
-            __('Road freight connects collection and delivery points on established regional corridors. It is suited to eligible parcels and palletised goods where a flexible pickup and a door-to-door handoff are useful.'),
-            __('Road service is available when the origin and destination sit within the same supported land area. For a longer journey, the quote tool can help compare air or sea alternatives instead.'),
-            'images/freight-road.jpg', __('Freight truck travelling through the evening on a European highway'), __('2–10 days'), __('Regional parcels and palletised freight'),
+            __('Road freight connects collection and delivery points on established regional corridors. It is suited to eligible parcels and palletised goods where a flexible pickup and a door-to-door handoff are useful. For journeys within the same supported land area, road service can offer a straightforward way to move goods without the complexity of multiple handoffs.'),
+            __('Road service is available when the origin and destination sit within the same supported land area. For a longer journey, the quote tool can help compare air or sea alternatives instead. We check route availability before confirming any booking, so you know the service is viable before you commit.'),
+            'images/freight-road.jpg', __('Freight truck travelling through the evening on a highway'), __('2–10 days'), __('Regional parcels and palletised freight'),
             [__('Collection and delivery options on supported routes'), __('Suitable for selected pallet and parcel sizes'), __('Route checked before a booking is confirmed')],
         ],
         'express' => [
             'zap', __('Express'), __('For the documents and small shipments that cannot wait.'),
-            __('Express is designed for eligible shipments where timing is the main consideration. Priority handling and the next available flight help reduce waiting between key stages of the journey.'),
-            __('After booking, we guide you through the required shipment details, coordinate the priority air movement and keep the delivery handoff visible. Transit estimates depend on route availability and destination processing.'),
+            __('Express is designed for eligible shipments where timing is the main consideration. Priority handling and the next available flight help reduce waiting between key stages of the journey. When you need a document, sample or small shipment to arrive as quickly as possible, express gives your goods the attention they need.'),
+            __('After booking, we guide you through the required shipment details, coordinate the priority air movement and keep the delivery handoff visible. Transit estimates depend on route availability and destination processing, but the service is built around speed and visibility from start to finish.'),
             'images/freight-express.jpg', __('Express air cargo moving across a sunlit airport apron'), __('2–4 days'), __('Documents and smaller urgent goods'),
             [__('Priority handling at key handoffs'), __('The next available flight on eligible routes'), __('Clear updates through final delivery')],
         ],
@@ -72,14 +72,14 @@
             <p>{{ $content[4] }}</p>
 
             <h2>{{ __('Before you book') }}</h2>
-            <p>{{ __('A little preparation helps prevent avoidable delays. Have the sender and recipient details ready, describe each item accurately and make sure the parcel is packed for the handling it will receive on this route.') }}</p>
+            <p>{{ __('A little preparation helps prevent avoidable delays. Have the sender and recipient details ready, describe each item accurately and make sure the parcel is packed for the handling it will receive on this route. Good preparation at the start saves time and reduces the chance of problems later in the journey.') }}</p>
             <ul>
                 <li>{{ __('Sender and recipient names, addresses and phone numbers') }}</li>
                 <li>{{ __('A clear contents description and a realistic declared value') }}</li>
                 <li>{{ __('Parcel dimensions and weight, measured after packing') }}</li>
                 <li>{{ __('Any permits or supporting documents required for the goods') }}</li>
             </ul>
-            <p>{{ __('Transit windows are estimates and may change with flight or vessel schedules, customs processing and local delivery conditions. Your quote shows the current estimate for the route you enter.') }}</p>
+            <p>{{ __('Transit windows are estimates and may change with flight or vessel schedules, customs processing and local delivery conditions. Your quote shows the current estimate for the route you enter, based on the information available at the time.') }}</p>
             <p><a href="{{ lroute('page.prohibited-items') }}">{{ __('Check restricted and prohibited goods') }}</a> · <a href="{{ lroute('page.packing') }}">{{ __('Read the packing guide') }}</a> · <a href="{{ lroute('page.customs') }}">{{ __('Prepare for customs') }}</a></p>
         </article>
 

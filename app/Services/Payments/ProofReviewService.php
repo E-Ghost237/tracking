@@ -137,7 +137,7 @@ class ProofReviewService
         $this->notifications->send('proof.rejected', $order->user, [
             'order_number' => $order->number,
             'reference' => $order->payment_reference,
-            'reason' => trim(__(ReviewDecision::rejectReasons()[$reasonCode], [], $locale).($note ? ' — '.$note : '')),
+            'reason' => trim(__(ReviewDecision::rejectReasons()[$reasonCode], [], $locale).($note ? ' - '.$note : '')),
             'pay_url' => route($locale.'.account.orders.pay', $order),
         ]);
 

@@ -43,7 +43,7 @@
         <div class="container-page flex flex-col gap-4 py-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
             <p>© {{ now()->year }} {{ config('platform.brand.legal_name') }}. {{ __('All rights reserved.') }}</p>
             <p class="max-w-3xl md:text-right">
-                {{ __('USPS, UPS and FedEx are trademarks of their respective owners. Their names are used only to describe the delivery networks that handle the last mile and to recognise their tracking numbers. :brand is not affiliated with, endorsed or sponsored by these carriers.', ['brand' => config('platform.brand.name')]) }}
+                {{ __('USPS, UPS and FedEx are trademarks of their respective owners. Their names are used only to describe the delivery networks that handle the last mile and to recognise their tracking numbers. Brand is not affiliated with, endorsed or sponsored by these carriers.', ['brand' => config('platform.brand.name')]) }}
             </p>
         </div>
     </div>

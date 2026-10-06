@@ -55,7 +55,7 @@
                         <div x-ref="canvas" class="absolute inset-0 cursor-grab active:cursor-grabbing"></div>
                         <div x-show="fallback" x-cloak class="absolute inset-0 flex items-center">
                             <div class="relative w-full overflow-hidden rounded-xl border border-white/10">
-                                <img src="/images/world-map.svg" alt="{{ __('World map of supported routes') }}" class="w-full">
+                                <img src="/images/global-globe-logistics.jpg" alt="{{ __('World map of supported routes') }}" class="w-full">
                                 <template x-for="hub in hubs" :key="hub.city">
                                     <span class="absolute size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500" :style="{ left: fallbackLeft(hub), top: fallbackTop(hub) }"></span>
                                 </template>
