@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Design preview · Corvane</title>
+    <meta name="theme-color" content="#061526">
+    <!--PREVIEW_CSS-->
+    <style>
+        /* Review-only switcher. Not part of the application. */
+        .preview-switch {
+            position: fixed;
+            z-index: 70;
+            bottom: 1rem;
+            left: 50%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.25rem;
+            max-width: calc(100vw - 2rem);
+            padding: 0.25rem;
+            border: 1px solid #e3e8ef;
+            border-radius: 6px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgb(6 21 38 / 0.06), 0 18px 28px -20px rgb(6 21 38 / 0.24);
+            transform: translateX(-50%);
+        }
+        .preview-switch a {
+            padding: 0.4rem 0.7rem;
+            border-radius: 4px;
+            font: 600 12px/1 'Inter Variable', system-ui, sans-serif;
+            color: #234669;
+            text-decoration: none;
+        }
+        .preview-switch a:hover { background: #f5f7fa; }
+        .preview-switch a[aria-current='page'] { background: #0b1f36; color: #fff; }
+
+        /*
+         * Account review tabs. Preview-only: the application reaches each of these
+         * screens from the account sidebar, from an order or from the shipments list.
+         * Styled with the product's own scale so the chrome cannot be mistaken for
+         * part of the design.
+         */
+        .preview-note {
+            padding: 0.5rem 0.75rem;
+            border: 1px dashed #c0d0e2;
+            border-radius: 4px;
+            background: #f5f7fa;
+        }
+        .preview-note-label {
+            font: 600 11px/1.4 'Inter Variable', system-ui, sans-serif;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #234669;
+        }
+        .preview-tabs > input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+        .preview-tablist {
+            display: flex;
+            gap: 0.125rem;
+            overflow-x: auto;
+            border-bottom: 1px solid #e3e8ef;
+        }
+        .preview-tablist label {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 2px solid transparent;
+            font: 600 13px/1.2 'Inter Variable', system-ui, sans-serif;
+            color: #4b5a6b;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .preview-tablist label:hover { color: #061526; }
+        .preview-panels > .preview-panel { display: none; padding-top: 1.75rem; }
+
+        .preview-tabs > input:nth-of-type(1):checked ~ .preview-tablist label:nth-of-type(1),
+        .preview-tabs > input:nth-of-type(2):checked ~ .preview-tablist label:nth-of-type(2),
+        .preview-tabs > input:nth-of-type(3):checked ~ .preview-tablist label:nth-of-type(3),
+        .preview-tabs > input:nth-of-type(4):checked ~ .preview-tablist label:nth-of-type(4),
+        .preview-tabs > input:nth-of-type(5):checked ~ .preview-tablist label:nth-of-type(5),
+        .preview-tabs > input:nth-of-type(6):checked ~ .preview-tablist label:nth-of-type(6) {
+            color: #061526;
+            border-bottom-color: #c2410c;
+        }
+
+        .preview-tabs > input:nth-of-type(1):checked ~ .preview-panels > .preview-panel:nth-of-type(1),
+        .preview-tabs > input:nth-of-type(2):checked ~ .preview-panels > .preview-panel:nth-of-type(2),
+        .preview-tabs > input:nth-of-type(3):checked ~ .preview-panels > .preview-panel:nth-of-type(3),
+        .preview-tabs > input:nth-of-type(4):checked ~ .preview-panels > .preview-panel:nth-of-type(4),
+        .preview-tabs > input:nth-of-type(5):checked ~ .preview-panels > .preview-panel:nth-of-type(5),
+        .preview-tabs > input:nth-of-type(6):checked ~ .preview-panels > .preview-panel:nth-of-type(6) {
+            display: block;
+        }
+
+        /* Keep the account sidebar in step with the tab that is open. */
+        body:has(#acct-dashboard:checked) label[for='acct-dashboard'],
+        body:has(#acct-shipments:checked) label[for='acct-shipments'],
+        body:has(#acct-shipment-detail:checked) label[for='acct-shipments'],
+        body:has(#acct-orders:checked) label[for='acct-orders'],
+        body:has(#acct-payment:checked) label[for='acct-orders'],
+        body:has(#acct-booking:checked) label[for='acct-shipments'] {
+            background: #0b1f36;
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-paper antialiased">
+<!--PREVIEW_BODY-->
+</body>
+</html>
