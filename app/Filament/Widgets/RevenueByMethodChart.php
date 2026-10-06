@@ -29,7 +29,7 @@ class RevenueByMethodChart extends ChartWidget
             ->pluck('count', 'name');
 
         return [
-            'datasets' => [['data' => $rows->values()->all(), 'backgroundColor' => ['#ff6b2c', '#22b8f0', '#0a1628', '#f59e0b', '#10b981', '#8b5cf6', '#ef4444', '#64748b']]],
+            'datasets' => [['data' => $rows->values()->all(), 'backgroundColor' => [/* accent, navy ramp and route blue — see resources/css/app.css */ '#c2410c', '#375c86', '#e2703a', '#0f2740', '#7fb3e0', '#9a3412', '#94adc9', '#234669']]],
             'labels' => $rows->keys()->all(),
         ];
     }

@@ -39,10 +39,30 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->path(trim((string) config('platform.admin.path', 'admin'), '/'))
             ->brandName(config('platform.brand.name').' Back-office')
+            ->brandLogo(fn () => view('filament.brand-logo'))
+            ->favicon(asset('favicon.svg'))
+            /*
+             * The palette mirrors resources/css/app.css so the back-office reads as part of the
+             * same product: one signal accent for primary actions, the site's navy ramp as the
+             * neutral grey scale, and status colours kept semantic. `info` is mapped to the
+             * site's mid navy rather than a second accent.
+             */
             ->colors([
-                'primary' => Color::hex('#ff6b2c'),
-                'gray' => Color::Slate,
-                'info' => Color::Sky,
+                'primary' => Color::hex('#c2410c'),
+                'gray' => [
+                    50 => '#f5f7fa',
+                    100 => '#eff3f8',
+                    200 => '#e3e8ef',
+                    300 => '#c0d0e2',
+                    400 => '#5d7fa6',
+                    500 => '#546078',
+                    600 => '#375c86',
+                    700 => '#234669',
+                    800 => '#0f2740',
+                    900 => '#0b1f36',
+                    950 => '#061526',
+                ],
+                'info' => Color::hex('#375c86'),
                 'success' => Color::Emerald,
                 'warning' => Color::Amber,
                 'danger' => Color::Rose,

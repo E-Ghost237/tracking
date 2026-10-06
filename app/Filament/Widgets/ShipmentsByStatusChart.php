@@ -29,7 +29,7 @@ class ShipmentsByStatusChart extends ChartWidget
         }
 
         return [
-            'datasets' => [['label' => 'Shipments', 'data' => $values, 'backgroundColor' => '#22b8f0']],
+            'datasets' => [['label' => 'Shipments', 'data' => $values, 'backgroundColor' => '#234669']],
             'labels' => $labels,
         ];
     }
