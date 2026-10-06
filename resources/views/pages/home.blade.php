@@ -5,8 +5,9 @@
         'air' => ['poster' => asset('images/freight-air.jpg')],
         'sea' => ['poster' => asset('images/freight-sea.jpg')],
         'road' => ['poster' => asset('images/freight-road.jpg')],
+        'express' => ['poster' => asset('images/freight-express.jpg')],
     ];
-    foreach (['air', 'sea', 'road'] as $scene) {
+    foreach (['air', 'sea', 'road', 'express'] as $scene) {
         foreach (['mp4', 'webm', 'poster'] as $kind) {
             $key = 'hero_'.$scene.'_'.$kind;
             if (isset($hero[$key])) {
@@ -17,7 +18,7 @@
 @endphp
 
 @section('content')
-    {{-- A slow, accessible change of air, sea and road scenes gives the page a living route. --}}
+    {{-- Hero section with rotating transport scenes and interactive globe --}}
     <section x-data="heroScenes" data-scene="{{ $defaultScene }}"
              @mouseenter="pauseRotation()" @mouseleave="resumeRotation()" @focusin="pauseRotation()" @focusout="resumeRotation()"
              class="relative isolate overflow-hidden bg-ink-950 text-white">
@@ -25,26 +26,44 @@
             <img src="/images/freight-air.jpg" :src="poster('air')" alt="" fetchpriority="high" class="hero-scene-image" :class="scene === 'air' ? 'is-active' : ''">
             <img src="/images/freight-sea.jpg" :src="poster('sea')" alt="" class="hero-scene-image" :class="scene === 'sea' ? 'is-active' : ''">
             <img src="/images/freight-road.jpg" :src="poster('road')" alt="" class="hero-scene-image" :class="scene === 'road' ? 'is-active' : ''">
+            <img src="/images/freight-express.jpg" :src="poster('express')" alt="" class="hero-scene-image" :class="scene === 'express' ? 'is-active' : ''">
             <video x-ref="video" x-show="hasVideo" x-cloak class="absolute inset-0 size-full object-cover" muted loop playsinline preload="none"></video>
         </div>
         <div class="hero-scene-overlay absolute inset-0 -z-10"></div>
         <div class="hero-photo-wash pointer-events-none absolute inset-0 -z-10"></div>
 
+        {{-- Decorative globe elements --}}
+        <div class="absolute top-20 right-10 w-64 h-64 opacity-20 pointer-events-none hidden lg:block">
+            <svg viewBox="0 0 200 200" class="w-full h-full">
+                <defs>
+                    <radialGradient id="globeGlow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#83d6cf" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#83d6cf" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#83d6cf" stroke-width="0.5" opacity="0.4"/>
+                <circle cx="100" cy="100" r="70" fill="none" stroke="#83d6cf" stroke-width="0.3" opacity="0.3"/>
+                <circle cx="100" cy="100" r="50" fill="none" stroke="#83d6cf" stroke-width="0.3" opacity="0.2"/>
+                <ellipse cx="100" cy="100" rx="90" ry="40" fill="none" stroke="#83d6cf" stroke-width="0.5" opacity="0.5"/>
+                <ellipse cx="100" cy="100" rx="90" ry="60" fill="none" stroke="#83d6cf" stroke-width="0.4" opacity="0.4"/>
+            </svg>
+        </div>
+
         <div class="container-page relative grid min-h-[min(900px,100svh)] items-center gap-8 pt-28 pb-10 lg:min-h-[790px] lg:grid-cols-12 lg:gap-4 lg:pt-24">
             <div class="relative z-10 lg:col-span-6 xl:col-span-6">
                 <p class="eyebrow eyebrow-rule !text-brand-300">
                     <span class="size-2 rounded-full bg-brand-300 shadow-[0_0_0_4px_rgb(233_139_104/0.15)]"></span>
-                    {{ __('Air, sea and road freight') }}
+                    {{ __('Air, sea, road and express freight') }}
                 </p>
                 <h1 class="editorial-title mt-6 max-w-2xl text-[3.25rem] leading-[0.98] !text-white sm:text-6xl xl:text-[5.15rem]">
-                    {{ __('The world is big.') }}
-                    <span class="editorial-italic block">{{ __('Shipping needn’t be.') }}</span>
+                    {{ __('Move goods across') }}
+                    <span class="editorial-italic block">{{ __('any distance') }}</span>
                 </h1>
                 <p class="mt-6 max-w-xl text-base leading-7 text-slate-200 sm:text-lg sm:leading-8">
-                    {{ __('From a parcel crossing the Atlantic to a pallet with a longer journey ahead, we help you choose a sensible route, see the cost before you book and follow each handoff to delivery.') }}
+                    {{ __('Whether shipping a single parcel across the ocean or coordinating pallets with a longer journey ahead, we help you choose the right route, see costs before booking and follow each handoff to delivery.') }}
                 </p>
 
-                {{-- Tracking and quote tool stay close to the first decision. --}}
+                {{-- Tracking and quote tool --}}
                 <div x-data="trackBox" data-track-url="{{ lroute('track') }}" data-quote-url="{{ lroute('quote') }}"
                      class="mt-8 max-w-xl rounded-[1.35rem] border border-white/15 bg-ink-900/80 p-2 shadow-2xl shadow-black/30 backdrop-blur-md">
                     <div class="flex gap-1 p-1" role="tablist">
@@ -96,10 +115,11 @@
                 <ul class="mt-7 flex flex-wrap gap-x-6 gap-y-3 text-xs font-medium text-slate-300 sm:text-sm">
                     <li class="flex items-center gap-2"><x-lucide name="shield-check" class="size-4 text-route-400" /> {{ __('Payments checked by our team') }}</li>
                     <li class="flex items-center gap-2"><x-lucide name="radar" class="size-4 text-route-400" /> {{ __('One place to follow every handoff') }}</li>
+                    <li class="flex items-center gap-2"><x-lucide name="globe" class="size-4 text-route-400" /> {{ __('Global coverage, local delivery') }}</li>
                 </ul>
             </div>
 
-            {{-- The network globe stays visible beside the story, rather than competing with it. --}}
+            {{-- Interactive globe beside the hero content --}}
             <div class="relative lg:col-span-6 xl:col-span-6">
                 <div class="pointer-events-none absolute inset-[10%] rounded-full border border-white/10"></div>
                 <div class="pointer-events-none absolute inset-[17%] rounded-full border border-white/[0.07]"></div>
@@ -108,7 +128,7 @@
                     <div x-show="!ready && !fallback" class="absolute inset-[12%] animate-pulse rounded-full bg-[radial-gradient(circle_at_35%_35%,#19323d,#07151c_70%)] shadow-[0_0_80px_rgba(131,214,207,0.16)]"></div>
                     <div x-show="fallback" x-cloak class="absolute inset-0 flex items-center">
                         <div class="relative w-full overflow-hidden rounded-[1.35rem] border border-white/10">
-                            <img src="/images/world-map.svg" alt="{{ __('Map of the worldwide network') }}" class="w-full" loading="lazy">
+                            <img src="/images/global-globe-logistics.jpg" alt="{{ __('Map of the worldwide network') }}" class="w-full" loading="lazy">
                             <template x-for="hub in hubs" :key="hub.city">
                                 <span class="absolute size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500 ring-4 ring-brand-500/25" :style="{ left: fallbackLeft(hub), top: fallbackTop(hub) }"></span>
                             </template>
@@ -116,17 +136,19 @@
                     </div>
                 </div>
 
+                {{-- Floating info cards --}}
                 <div class="pointer-events-none absolute top-[12%] left-0 hidden rounded-xl border border-white/15 bg-ink-900/85 px-4 py-3 shadow-xl backdrop-blur sm:block">
-                    <p class="text-[10px] font-semibold tracking-[0.16em] text-slate-400 uppercase">{{ __('A sample route') }}</p>
-                    <p class="mt-1.5 flex items-center gap-2 font-display text-sm font-bold text-white">New York <x-lucide name="arrow-right" class="size-4 text-route-400" /> Paris</p>
+                    <p class="text-[10px] font-semibold tracking-[0.16em] text-slate-400 uppercase">{{ __('Sample route') }}</p>
+                    <p class="mt-1.5 flex items-center gap-2 font-display text-sm font-bold text-white">Houston <x-lucide name="arrow-right" class="size-4 text-route-400" /> Paris</p>
                 </div>
                 <div class="pointer-events-none absolute right-0 bottom-[18%] hidden rounded-xl border border-white/15 bg-ink-900/85 px-4 py-3 shadow-xl backdrop-blur sm:block">
-                    <p class="text-[10px] font-semibold tracking-[0.16em] text-slate-400 uppercase">{{ __('Carrier handoff') }}</p>
+                    <p class="text-[10px] font-semibold tracking-[0.16em] text-slate-400 uppercase">{{ __('Carriers') }}</p>
                     <p class="mt-1.5 text-sm font-semibold text-white">USPS · UPS · FedEx</p>
                 </div>
 
+                {{-- Scene selector --}}
                 <div class="absolute right-1/2 bottom-0 flex translate-x-1/2 items-center gap-1.5 rounded-xl border border-white/15 bg-ink-950/90 p-1.5 shadow-xl backdrop-blur-md sm:right-1/2 sm:bottom-2" role="group" aria-label="{{ __('Choose a transport scene') }}">
-                    @foreach (['air' => ['plane', __('Air')], 'sea' => ['ship', __('Sea')], 'road' => ['truck', __('Road')]] as $scene => [$icon, $label])
+                    @foreach (['air' => ['plane', __('Air')], 'sea' => ['ship', __('Sea')], 'road' => ['truck', __('Road')], 'express' => ['zap', __('Express')]] as $scene => [$icon, $label])
                         <button type="button" @click="setScene('{{ $scene }}')" :aria-pressed="scene === '{{ $scene }}'"
                                 class="hero-scene-control flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition"
                                 :class="scene === '{{ $scene }}' ? 'text-white' : 'text-white/60 hover:text-white'">
@@ -139,13 +161,13 @@
         <span class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" aria-hidden="true"></span>
     </section>
 
-    {{-- Services --}}
+    {{-- Services overview --}}
     <section class="relative bg-paper py-20 sm:py-24">
         <div class="container-page">
             <div class="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end" data-reveal>
                 <div class="max-w-2xl">
                     <p class="eyebrow eyebrow-rule">{{ __('Choose your route') }}</p>
-                    <h2 class="editorial-title mt-4 text-4xl sm:text-5xl">{{ __('Four ways to get there. One clear view.') }}</h2>
+                    <h2 class="editorial-title mt-4 text-4xl sm:text-5xl">{{ __('Four ways to move your goods. One clear view.') }}</h2>
                     <p class="mt-4 max-w-xl leading-7 text-slate-600">{{ __('The right service depends on what you are sending, how far it is going and when it needs to arrive. Start with the essentials below, then compare routes in a quote.') }}</p>
                 </div>
                 <a href="{{ lroute('services') }}" class="btn-ghost shrink-0">{{ __('Compare all services') }} <x-lucide name="arrow-right" class="size-4" /></a>
@@ -155,7 +177,7 @@
                 $serviceCards = [
                     'air' => ['plane', __('Air freight'), __('A practical choice for parcels, business samples and time-sensitive stock. Your shipment moves on scheduled flights, with updates through customs and delivery.'), __('3–7 days'), 'images/freight-air.jpg', __('Cargo aircraft crossing the evening sky')],
                     'sea' => ['ship', __('Sea freight'), __('Share container space for furniture, equipment or regular stock. It takes longer, but often brings the cost per kilogram down for larger loads.'), __('25–45 days'), 'images/freight-sea.jpg', __('Container ship approaching a busy port at sunrise')],
-                    'road' => ['truck', __('Road freight'), __('For regional journeys where a flexible pickup and direct delivery make sense. Choose road for eligible parcels and palletised freight on land routes.'), __('2–10 days'), 'images/freight-road.jpg', __('Long-haul truck travelling along a European highway')],
+                    'road' => ['truck', __('Road freight'), __('For regional journeys where a flexible pickup and direct delivery make sense. Choose road for eligible parcels and palletised freight on land routes.'), __('2–10 days'), 'images/freight-road.jpg', __('Long-haul truck travelling along a highway at dusk')],
                     'express' => ['zap', __('Express'), __('When a deadline matters most, priority handling and the next available flight help urgent documents and smaller shipments keep moving.'), __('2–4 days'), 'images/freight-express.jpg', __('Express air cargo being prepared at an airport')],
                 ];
             @endphp
@@ -194,7 +216,7 @@
 
             @php
                 $steps = [
-                    ['calculator', __('Get a quote'), __('Enter origin, destination and parcel size. See price and transit time instantly.')],
+                    ['calculator', __('Get a quote'), __('Enter origin, destination and parcel size. See price and transit time instantly.')], 
                     ['package', __('Book your shipment'), __('Add sender, recipient and customs details. We save your progress at every step.')],
                     ['shield-check', __('Pay and upload proof'), __('Pay with the method of your choice and upload your receipt. A verifier confirms it, usually within 30 minutes.')],
                     ['radar', __('Track to delivery'), __('Get your label and tracking number, then follow every scan by email and on the globe.')],
@@ -202,7 +224,7 @@
             @endphp
             <ol class="relative mt-16 grid gap-10 md:grid-cols-4 md:gap-6">
                 <svg class="pointer-events-none absolute top-7 right-[12%] left-[12%] hidden h-2 md:block" preserveAspectRatio="none" viewBox="0 0 100 2" aria-hidden="true">
-                    <line x1="0" y1="1" x2="100" y2="1" stroke="#d7522d" stroke-width="2" vector-effect="non-scaling-stroke" class="route-dash" opacity="0.5"/>
+                    <line x1="0" y1="1" x2="100" y2="1" stroke="#c54727" stroke-width="2" vector-effect="non-scaling-stroke" class="route-dash" opacity="0.5"/>
                 </svg>
                 @foreach ($steps as [$icon, $name, $text])
                     <li class="relative text-center" data-reveal="{{ $loop->index * 120 }}">
@@ -218,19 +240,19 @@
         </div>
     </section>
 
-    {{-- Coverage --}}
+    {{-- Coverage and network --}}
     <section class="bg-white py-24">
         <div class="container-page grid items-center gap-14 lg:grid-cols-2">
             <div data-reveal>
                 <p class="eyebrow">{{ __('Network and coverage') }}</p>
-                <h2 class="editorial-title mt-3 text-4xl sm:text-5xl">{{ __('International freight, with local delivery handled') }}</h2>
+                <h2 class="editorial-title mt-3 text-4xl sm:text-5xl">{{ __('International freight with local delivery handled') }}</h2>
                 <p class="mt-4 text-slate-600">{{ __('Your shipment may pass through several teams before it reaches the door. We coordinate the long-distance leg, share clear updates at each handoff and work with established local carriers for the final delivery.') }}</p>
 
                 <dl class="mt-10 space-y-4">
                     @foreach ([
-                        ['map-pinned', __('United States'), __('USPS and UPS handle the local delivery on eligible routes. Your shipment keeps one clear tracking journey.')],
-                        ['map-pinned', __('Europe and the United Kingdom'), __('Established regional carriers complete delivery across supported European destinations.')],
-                        ['route', __('Connecting routes worldwide'), __('For destinations beyond our core lanes, our team confirms the available service and local delivery partner before you book.')],
+                        ['map-pinned', __('North America'), __('USPS and UPS handle the local delivery on eligible routes across the United States. Your shipment keeps one clear tracking journey from pickup to doorstep.')],
+                        ['map-pinned', __('Europe and the United Kingdom'), __('Established regional carriers complete delivery across supported European destinations, with coordinated handover at each stage.')],
+                        ['route', __('Connecting routes worldwide'), __('For destinations beyond our core lanes, our team confirms the available service and local delivery partner before you book, so there are no surprises.')],
                     ] as [$icon, $region, $text])
                         <div class="flex gap-4 rounded-2xl border border-line p-5 transition hover:border-brand-200 hover:bg-brand-50/40" data-reveal="{{ $loop->index * 90 }}">
                             <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600"><x-lucide :name="$icon" class="size-5" /></span>
@@ -247,7 +269,7 @@
             <div class="relative" data-reveal="120">
                 <div class="overflow-hidden rounded-[2rem] bg-ink-900 p-3 shadow-[var(--shadow-lift)]">
                     <div class="relative overflow-hidden rounded-[1.5rem]">
-                        <img src="/images/world-map.svg" alt="{{ __('World map showing our hubs') }}" class="w-full" loading="lazy" width="1000" height="500">
+                        <img src="/images/global-globe-logistics.jpg" alt="{{ __('World map showing our hubs') }}" class="w-full" loading="lazy" width="1000" height="500">
                         @foreach ($hubs as $hub)
                             <span class="absolute" style="left: {{ number_format((($hub->lon + 180) / 360) * 100, 3, '.', '') }}%; top: {{ number_format(((90 - $hub->lat) / 180) * 100, 3, '.', '') }}%" title="{{ __('Network hub') }}">
                                 <span class="absolute size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500"></span>
@@ -264,7 +286,7 @@
         </div>
     </section>
 
-    {{-- Payments you can trust --}}
+    {{-- Trusted payments --}}
     <section class="relative overflow-hidden bg-ink-950 py-24 text-white">
         <div class="pointer-events-none absolute inset-0 grid-bg"></div>
         <div class="container-page relative grid gap-14 lg:grid-cols-2">
@@ -305,7 +327,7 @@
                 <div data-reveal>
                     <p class="eyebrow">{{ __('Help center') }}</p>
                     <h2 class="editorial-title mt-3 text-4xl sm:text-5xl">{{ __('Questions, answered') }}</h2>
-                    <p class="mt-4 text-slate-600">{{ __('Can’t find what you need? Our team replies in English and French.') }}</p>
+                    <p class="mt-4 text-slate-600">{{ __('Can not find what you need? Our team replies in English and French.') }}</p>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <a href="{{ lroute('help') }}" class="btn-ghost">{{ __('Visit the help center') }}</a>
                         <a href="{{ lroute('contact') }}" class="btn-dark">{{ __('Contact us') }}</a>
@@ -326,7 +348,7 @@
         </section>
     @endif
 
-    {{-- A quieter close with one clear action. --}}
+    {{-- Closing section --}}
     <section class="container-page pb-20 sm:pb-24">
         <div class="relative grid overflow-hidden rounded-2xl bg-ink-900 text-white shadow-[var(--shadow-lift)] md:min-h-[370px] md:grid-cols-2" data-reveal>
             <div class="relative z-10 flex flex-col items-start justify-center p-7 sm:p-10 md:py-14">

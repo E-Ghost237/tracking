@@ -7,7 +7,7 @@
             <div class="container-page relative py-14">
                 <p class="eyebrow eyebrow-rule !text-brand-300"><x-lucide name="radar" class="size-4" /> {{ __('Shipment tracking') }}</p>
                 <h1 class="editorial-title mt-4 max-w-3xl text-5xl leading-[0.98] !text-white sm:text-6xl">{{ __('See where the journey stands.') }}</h1>
-                <p class="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">{{ __('Enter up to 20 tracking numbers, one per line or separated by commas. We recognise supported USPS, UPS, FedEx and :brand numbers, then bring available scans together so you do not have to check several sites.', ['brand' => config('platform.brand.name')]) }}</p>
+                <p class="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">{{ __('Enter up to 20 tracking numbers, one per line or separated by commas. We recognise supported USPS, UPS, FedEx and brand numbers, then bring available scans together so you do not have to check several sites.', ['brand' => config('platform.brand.name')]) }}</p>
 
                 <form @submit.prevent="lookup()" class="mt-8 grid max-w-3xl gap-3 sm:grid-cols-[1fr_auto]" action="{{ lroute('track') }}" method="GET">
                     <label for="track-input" class="sr-only">{{ __('Tracking numbers') }}</label>

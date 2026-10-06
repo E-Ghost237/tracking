@@ -45,21 +45,14 @@ class DemoSeeder extends Seeder
             $user->roles()->syncWithoutDetaching([Role::query()->where('slug', $role)->value('id')]);
         }
 
-        $customer = User::query()->firstOrCreate(['email' => 'customer@corvane.test'], ['name' => 'Chantal Mbarga', 'password' => self::PASSWORD, 'locale' => 'fr', 'phone' => '+237 6 99 00 00 00']);
+        $customer = User::query()->firstOrCreate(['email' => 'customer@corvane.test'], ['name' => 'Chantal Mbarga', 'password' => self::PASSWORD, 'locale' => 'en', 'phone' => '+1 713 555 0123']);
         $customer->forceFill(['email_verified_at' => now(), 'created_at' => now()->subDays(60)])->save();
         $customer->roles()->syncWithoutDetaching([Role::query()->where('slug', 'customer')->value('id')]);
 
         $this->paymentMethods();
         $this->shipments($customer);
 
-        Alert::query()->firstOrCreate(['title' => 'Public holiday in Cameroon'], [
-            'locale' => 'en', 'body' => 'Our Douala and Yaoundé hubs are closed on 20 May. Pickups resume the next day.', 'severity' => 'info',
-            'region' => 'Cameroon', 'starts_at' => now()->subDay(), 'ends_at' => now()->addDays(10), 'is_published' => true,
-        ]);
-        Alert::query()->firstOrCreate(['title' => 'Jour férié au Cameroun'], [
-            'locale' => 'fr', 'body' => 'Nos hubs de Douala et Yaoundé sont fermés le 20 mai. Les enlèvements reprennent le lendemain.', 'severity' => 'info',
-            'region' => 'Cameroun', 'starts_at' => now()->subDay(), 'ends_at' => now()->addDays(10), 'is_published' => true,
-        ]);
+
     }
 
     private function paymentMethods(): void
@@ -100,30 +93,32 @@ class DemoSeeder extends Seeder
         $references = app(ReferenceGenerator::class);
         $carrier = Carrier::query()->where('is_own', true)->firstOrFail();
         $places = [
-            'douala' => ['line1' => 'Rue Joss', 'city' => 'Douala', 'country' => 'CM', 'lat' => 4.0511, 'lon' => 9.7679],
+            'houston' => ['line1' => '1000 Shipping Lane', 'city' => 'Houston', 'country' => 'US', 'lat' => 29.7604, 'lon' => -95.3698],
             'paris' => ['line1' => '12 rue de Rivoli', 'city' => 'Paris', 'country' => 'FR', 'lat' => 48.8566, 'lon' => 2.3522],
             'guangzhou' => ['line1' => 'Baiyun District', 'city' => 'Guangzhou', 'country' => 'CN', 'lat' => 23.1291, 'lon' => 113.2644],
             'brussels' => ['line1' => 'Avenue Louise 54', 'city' => 'Brussels', 'country' => 'BE', 'lat' => 50.8503, 'lon' => 4.3517],
+            'newyork' => ['line1' => '350 Fifth Avenue', 'city' => 'New York', 'country' => 'US', 'lat' => 40.7128, 'lon' => -74.006],
+            'london' => ['line1' => '10 Downing Street', 'city' => 'London', 'country' => 'GB', 'lat' => 51.5072, 'lon' => -0.1276],
         ];
 
         $scenarios = [
-            ['air', 'douala', 'paris', 42500, ShipmentStatus::InTransit, 0.55, [
-                [ShipmentStatus::Ready, 'Shipment registered, label created', 'Douala, CM', 4.0511, 9.7679, 72],
-                [ShipmentStatus::PickedUp, 'Picked up at sender address', 'Douala, CM', 4.0511, 9.7679, 60],
-                [ShipmentStatus::InTransit, 'Departed origin airport', 'Douala, CM', 4.0511, 9.7679, 30],
+            ['air', 'houston', 'paris', 42500, ShipmentStatus::InTransit, 0.55, [
+                [ShipmentStatus::Ready, 'Shipment registered, label created', 'Houston, US', 29.7604, -95.3698, 72],
+                [ShipmentStatus::PickedUp, 'Picked up at sender address', 'Houston, US', 29.7604, -95.3698, 60],
+                [ShipmentStatus::InTransit, 'Departed origin airport', 'Houston, US', 29.7604, -95.3698, 30],
                 [ShipmentStatus::InTransit, 'Arrived at destination airport', 'Paris CDG, FR', 49.0097, 2.5479, 6],
             ]],
-            ['sea', 'guangzhou', 'douala', 186000, ShipmentStatus::InTransit, 0.4, [
+            ['sea', 'guangzhou', 'newyork', 186000, ShipmentStatus::InTransit, 0.4, [
                 [ShipmentStatus::Ready, 'Shipment registered, label created', 'Guangzhou, CN', 23.1291, 113.2644, 400],
                 [ShipmentStatus::PickedUp, 'Received at origin warehouse', 'Guangzhou, CN', 23.1291, 113.2644, 380],
                 [ShipmentStatus::InTransit, 'Loaded on vessel, departed port', 'Nansha Port, CN', 22.75, 113.6, 300],
-                [ShipmentStatus::InTransit, 'Vessel in transit, Indian Ocean', 'At sea', -2.0, 60.0, 120],
+                [ShipmentStatus::InTransit, 'Vessel in transit, Pacific Ocean', 'At sea', -2.0, 150.0, 120],
             ]],
-            ['road', 'paris', 'brussels', 9800, ShipmentStatus::Delivered, 1.0, [
+            ['road', 'paris', 'london', 9800, ShipmentStatus::Delivered, 1.0, [
                 [ShipmentStatus::Ready, 'Shipment registered, label created', 'Paris, FR', 48.8566, 2.3522, 120],
                 [ShipmentStatus::PickedUp, 'Picked up at sender address', 'Paris, FR', 48.8566, 2.3522, 100],
-                [ShipmentStatus::OutForDelivery, 'Out for delivery', 'Brussels, BE', 50.8503, 4.3517, 52],
-                [ShipmentStatus::Delivered, 'Delivered, signed by recipient', 'Brussels, BE', 50.8503, 4.3517, 48],
+                [ShipmentStatus::OutForDelivery, 'Out for delivery', 'London, GB', 51.5072, -0.1276, 52],
+                [ShipmentStatus::Delivered, 'Delivered, signed by recipient', 'London, GB', 51.5072, -0.1276, 48],
             ]],
         ];
 
@@ -148,7 +143,7 @@ class DemoSeeder extends Seeder
                 'tracking_number' => $sequences->trackingNumber($mode), 'carrier_id' => $carrier->id, 'order_id' => $order->id, 'user_id' => $customer->id,
                 'service' => ['air' => 'Air freight', 'sea' => 'Sea freight', 'road' => 'Road freight'][$mode], 'mode' => $mode,
                 'origin' => $places[$from], 'destination' => $places[$to],
-                'sender' => ['name' => 'Chantal Mbarga', 'phone' => '+237 6 99 00 00 00', 'email' => '', 'company' => ''],
+                'sender' => ['name' => 'Chantal Mbarga', 'phone' => '+1 713 555 0123', 'email' => '', 'company' => ''],
                 'recipient' => ['name' => 'Jean Dupont', 'phone' => '+33 6 00 00 00 00', 'email' => '', 'company' => ''],
                 'status' => $status, 'weight_g' => 12000, 'chargeable_weight_g' => 12000, 'declared_value' => 20000, 'progress' => $progress,
                 'eta_at' => now()->addDays($status === ShipmentStatus::Delivered ? -2 : 3), 'released_at' => now()->subDays(4),

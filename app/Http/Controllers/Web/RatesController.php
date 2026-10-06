@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Cache;
 class RatesController extends Controller
 {
     private const LANES = [
-        ['Douala', 'CM', 4.0511, 9.7679, 'Paris', 'FR', 48.8566, 2.3522],
-        ['Douala', 'CM', 4.0511, 9.7679, 'Houston', 'US', 29.7604, -95.3698],
-        ['Paris', 'FR', 48.8566, 2.3522, 'Douala', 'CM', 4.0511, 9.7679],
+        ['Houston', 'US', 29.7604, -95.3698, 'Paris', 'FR', 48.8566, 2.3522],
+        ['New York', 'US', 40.7128, -74.006, 'London', 'GB', 51.5072, -0.1276],
+        ['Paris', 'FR', 48.8566, 2.3522, 'Houston', 'US', 29.7604, -95.3698],
         ['Lagos', 'NG', 6.5244, 3.3792, 'London', 'GB', 51.5072, -0.1276],
-        ['New York', 'US', 40.7128, -74.006, 'Abidjan', 'CI', 5.36, -4.0083],
+        ['New York', 'US', 40.7128, -74.006, 'Accra', 'GH', 5.6037, -0.1870],
         ['Paris', 'FR', 48.8566, 2.3522, 'Brussels', 'BE', 50.8503, 4.3517],
     ];
 

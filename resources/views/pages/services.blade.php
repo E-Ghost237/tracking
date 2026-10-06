@@ -17,7 +17,7 @@
             ],
             'road' => [
                 'truck', __('Road freight'), __('For eligible regional journeys on land, road service offers a direct and flexible way to move parcels or pallets between collection and delivery points.'),
-                'images/freight-road.jpg', __('Long-haul freight truck on a European highway at dusk'), __('2–10 days on supported routes'),
+                'images/freight-road.jpg', __('Long-haul freight truck on a highway at dusk'), __('2–10 days on supported routes'),
                 [__('Suitable for parcels and palletised goods'), __('Flexible collection and delivery options'), __('Available on established land corridors')],
             ],
             'express' => [

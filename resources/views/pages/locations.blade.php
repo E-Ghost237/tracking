@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => __('Pickup and drop-off locations'), 'description' => __('Find a supported collection point or arrange a pickup for your shipment.')])
 
 @section('content')
-    <x-page-header :eyebrow="__('Locations')" icon="map-pinned" :title="__('Find a collection point that works for you')" :lead="__('Use a listed hub or partner point when it suits your schedule, or request a pickup at your door. Each location shows the services available there and any published opening information.')">
+    <x-page-header :eyebrow="__('Locations')" icon="map-pinned" :title="__('Find a collection point that works for you')" :lead="__('Use a listed hub or partner point when it suits your schedule, or request a pickup at your door. Each location shows the services available there and any published opening information. If you are not sure which option suits your shipment best, include the route in a quote and our team can help you check.')">
         <a href="{{ lroute('quote') }}" class="btn-primary mt-7">{{ __('Plan a shipment') }} <x-lucide name="arrow-right" class="size-4" /></a>
     </x-page-header>
 
