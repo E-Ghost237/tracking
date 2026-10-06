@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Services\AuditLogger;
 use App\Services\Notifications\NotificationService;
+use App\Support\Permissions;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -101,7 +102,7 @@ class ProfileController extends Controller
         $user = $request->user();
         $user->forceFill(['deletion_requested_at' => now()])->save();
         $audit->log('account.deletion_requested', $user, null, null, $user);
-        $notifications->notifyStaff('admin.deletion_request', \App\Support\Permissions::USERS_MANAGE, ['email' => $user->email]);
+        $notifications->notifyStaff('admin.deletion_request', Permissions::USERS_MANAGE, ['email' => $user->email]);
 
         return back()->with('status', __('Your deletion request was received. We will process it within 30 days and confirm by email.'));
     }

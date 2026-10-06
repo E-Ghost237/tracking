@@ -20,6 +20,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 /**
  * Tracking events. Events are added through ShipmentEventService (source and author recorded,
@@ -57,7 +58,7 @@ class EventsRelationManager extends RelationManager
                         TextInput::make('label')->required()->maxLength(250),
                         Select::make('city')->label('Place')->searchable()
                             ->getSearchResultsUsing(fn (string $search) => City::query()
-                                ->whereRaw('LOWER(ascii_name) LIKE ?', [addcslashes(mb_strtolower(\Illuminate\Support\Str::ascii($search)), '%_\\').'%'])
+                                ->whereRaw('LOWER(ascii_name) LIKE ?', [addcslashes(mb_strtolower(Str::ascii($search)), '%_\\').'%'])
                                 ->orderByDesc('population')->limit(20)->get()
                                 ->mapWithKeys(fn (City $c) => [$c->id => $c->name.', '.$c->country])->all())
                             ->getOptionLabelUsing(fn ($value) => ($c = City::query()->find($value)) ? $c->name.', '.$c->country : null),

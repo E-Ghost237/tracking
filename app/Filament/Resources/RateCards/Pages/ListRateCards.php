@@ -4,6 +4,7 @@ namespace App\Filament\Resources\RateCards\Pages;
 
 use App\Filament\Resources\RateCards\RateCardResource;
 use App\Services\Pricing\RateCardCsv;
+use App\Support\Permissions;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Forms\Components\FileUpload;
@@ -23,7 +24,7 @@ class ListRateCards extends ListRecords
             Action::make('import')
                 ->label('Import CSV as new version')
                 ->icon(Heroicon::OutlinedArrowUpTray)
-                ->visible(fn () => auth()->user()?->hasPermission(\App\Support\Permissions::RATES_MANAGE))
+                ->visible(fn () => auth()->user()?->hasPermission(Permissions::RATES_MANAGE))
                 ->schema([
                     TextInput::make('name')->required()->maxLength(120)->default('Imported rate card'),
                     FileUpload::make('file')

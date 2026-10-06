@@ -146,7 +146,9 @@ class FileStorageService
 
         $info = @getimagesize($path);
 
-        return is_array($info) && $info[0] > 0 && $info[1] > 0 && $info[0] <= 12000 && $info[1] <= 12000;
+        // Bound decoded size before any image processing (decompression bombs).
+        return is_array($info) && $info[0] > 0 && $info[1] > 0 && $info[0] <= 10000 && $info[1] <= 10000
+            && $info[0] * $info[1] <= ImageSanitizer::MAX_PIXELS;
     }
 
     private function safeName(string $name, string $extension): string

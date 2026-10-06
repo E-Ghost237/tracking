@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Surcharges\Pages;
 
 use App\Filament\Resources\Surcharges\SurchargeResource;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListSurcharges extends ListRecords
@@ -11,6 +12,6 @@ class ListSurcharges extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [\Filament\Actions\CreateAction::make()];
+        return [CreateAction::make()];
     }
 }

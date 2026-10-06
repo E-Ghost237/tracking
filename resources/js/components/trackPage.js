@@ -68,7 +68,7 @@ export default () => ({
     async loadCaptcha() {
         try {
             const challenge = await api('/captcha');
-            this.captcha = { id: challenge.id, src: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(challenge.svg) };
+            this.captcha = { id: challenge.id, src: challenge.image };
         } catch {
             this.captcha = null;
         }

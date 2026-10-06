@@ -15,6 +15,7 @@ use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Session\TokenMismatchException;
@@ -82,6 +83,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 $e instanceof AuthenticationException => [401, 'unauthenticated', __('Please sign in to continue.'), []],
                 $e instanceof AuthorizationException => [403, 'forbidden', __('You are not allowed to do this.'), []],
                 $e instanceof ThrottleRequestsException => [429, 'too_many_requests', __('Too many requests. Please wait a moment and try again.'), []],
+                $e instanceof PostTooLargeException => [413, 'payload_too_large', __('The upload is too large. Each file must be 8 MB or smaller.'), []],
                 $e instanceof TokenMismatchException => [419, 'csrf_mismatch', __('Your session expired. Refresh the page and try again.'), []],
                 $e instanceof NotFoundHttpException, $e instanceof RecordsNotFoundException => [404, 'not_found', __('Not found.'), []],
                 $e instanceof HttpExceptionInterface => [$e->getStatusCode(), 'http_error', __('The request could not be completed.'), []],

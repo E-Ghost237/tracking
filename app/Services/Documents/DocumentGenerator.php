@@ -39,7 +39,7 @@ class DocumentGenerator
 
             $pdf = Pdf::loadView('pdf.'.$type, $data)
                 ->setPaper($type === 'label' ? [0, 0, 288, 432] : 'a4')
-                ->setOption(['isRemoteEnabled' => false, 'isPhpEnabled' => false, 'isJavascriptEnabled' => false]);
+                ->setOption(['isRemoteEnabled' => false, 'isPhpEnabled' => false, 'isJavascriptEnabled' => false, 'isFontSubsettingEnabled' => true]);
 
             $name = match ($type) {
                 'label' => 'label-'.$shipment->tracking_number,

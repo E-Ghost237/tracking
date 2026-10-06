@@ -15,6 +15,13 @@ class Shipment extends Model
     use Auditable, HasPublicId, SoftDeletes;
 
     /**
+     * In-memory defaults matching the column defaults, so new instances are complete.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = ['progress' => 0, 'weight_g' => 0, 'chargeable_weight_g' => 0, 'declared_value' => 0, 'currency' => 'USD', 'insurance' => false];
+
+    /**
      * @var list<string>
      */
     protected $fillable = [

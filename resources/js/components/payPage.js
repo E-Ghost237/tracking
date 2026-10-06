@@ -72,6 +72,16 @@ export default () => ({
         }
     },
 
+    /** Only https links are clickable; anything else (javascript:, data:) becomes inert. */
+    safeLink(value) {
+        return typeof value === 'string' && /^https:\/\//i.test(value) ? value : '#';
+    },
+
+    /** QR images are rendered by the server as SVG data URIs; nothing else is loaded. */
+    isQrImage(value) {
+        return typeof value === 'string' && value.startsWith('data:image/svg+xml;base64,');
+    },
+
     isGiftCard() {
         return this.details?.method?.kind === 'gift_card';
     },

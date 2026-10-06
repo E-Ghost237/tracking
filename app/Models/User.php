@@ -23,6 +23,13 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
+    /**
+     * In-memory defaults matching the column defaults, so new instances are complete.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = ['status' => 'active', 'locale' => 'en', 'failed_logins' => 0];
+
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, HasPublicId, Notifiable, SoftDeletes;
 

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PaymentProofs;
 use App\Enums\ProofStatus;
 use App\Models\PaymentMethod;
 use App\Models\PaymentProof;
+use App\Services\Settings;
 use App\Support\Money;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -51,7 +52,7 @@ class PaymentProofResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $alert = (int) app(\App\Services\Settings::class)->get('review_alert_minutes', 60);
+        $alert = (int) app(Settings::class)->get('review_alert_minutes', 60);
 
         return $table
             ->modifyQueryUsing(fn (Builder $query) => $query->with(['order.user', 'orderPayment.method', 'user']))
@@ -77,7 +78,7 @@ class PaymentProofResource extends Resource
                     ->query(fn (Builder $query, array $data) => $data['value'] ? $query->whereHas('orderPayment', fn ($q) => $q->where('payment_method_id', $data['value'])) : $query),
                 TernaryFilter::make('is_duplicate')->label('Duplicate flag'),
                 Filter::make('large')->label('Above two-person threshold')
-                    ->query(fn (Builder $query) => $query->whereHas('order', fn ($q) => $q->where('total', '>=', (int) app(\App\Services\Settings::class)->get('two_person_threshold')))),
+                    ->query(fn (Builder $query) => $query->whereHas('order', fn ($q) => $q->where('total', '>=', (int) app(Settings::class)->get('two_person_threshold')))),
                 Filter::make('overdue')->label('Older than alert threshold')
                     ->query(fn (Builder $query) => $query->where('submitted_at', '<', now()->subMinutes($alert))),
             ])

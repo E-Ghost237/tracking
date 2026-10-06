@@ -2,10 +2,12 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Support\InitialsAvatarProvider;
 use App\Http\Middleware\AdminAccess;
 use App\Http\Middleware\EnsureAccountActive;
 use App\Http\Middleware\NoStore;
 use App\Http\Middleware\SecurityHeaders;
+use Filament\FontProviders\LocalFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -45,8 +47,8 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
                 'danger' => Color::Rose,
             ])
-            ->font('Inter', provider: \Filament\FontProviders\LocalFontProvider::class)
-            ->defaultAvatarProvider(\App\Filament\Support\InitialsAvatarProvider::class)
+            ->font('Inter', provider: LocalFontProvider::class)
+            ->defaultAvatarProvider(InitialsAvatarProvider::class)
             ->strictAuthorization()
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth('full')

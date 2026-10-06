@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShipmentEvent extends Model
 {
+    /**
+     * In-memory defaults matching the column defaults, so new instances are complete.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = ['is_public' => true];
+
     protected $fillable = ['status', 'label', 'place', 'lat', 'lon', 'occurred_at', 'source', 'is_public', 'note', 'provider_event_id', 'created_by'];
 
     protected $hidden = ['id', 'shipment_id', 'created_by', 'note', 'provider_event_id'];

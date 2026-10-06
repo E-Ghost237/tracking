@@ -16,6 +16,13 @@ class OrderPayment extends Model
 {
     use HasPublicId;
 
+    /**
+     * In-memory defaults matching the column defaults, so new instances are complete.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = ['amount_received' => 0, 'exchange_rate' => 1];
+
     protected $fillable = [];
 
     protected $hidden = ['id', 'order_id', 'payment_method_id', 'details_snapshot'];

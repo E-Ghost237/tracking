@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\Auditable;
 use App\Casts\SecureEncryptedJson;
+use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Model;
 
 class Carrier extends Model

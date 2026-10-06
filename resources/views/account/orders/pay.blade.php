@@ -121,8 +121,13 @@
                                     <div class="min-w-0 flex-1">
                                         <dt class="text-xs font-semibold tracking-wider text-slate-500 uppercase" x-text="field.label"></dt>
                                         <dd class="mt-0.5 font-mono text-sm break-all text-ink-900" x-show="field.type !== 'link' && field.type !== 'qr'" x-text="field.value"></dd>
-                                        <dd class="mt-0.5 text-sm" x-show="field.type === 'link'"><a :href="field.value" target="_blank" rel="noopener noreferrer nofollow" class="link break-all" x-text="field.value"></a></dd>
-                                        <dd class="mt-2" x-show="field.type === 'qr'"><img :src="field.value" alt="{{ __('Payment QR code') }}" class="size-40 rounded-xl border border-line" x-show="field.value && field.value.startsWith('data:image/')"></dd>
+                                        {{-- Rendered only for their own type: a hidden <img :src> would still make the browser request the value. --}}
+                                        <template x-if="field.type === 'link'">
+                                            <dd class="mt-0.5 text-sm"><a :href="safeLink(field.value)" target="_blank" rel="noopener noreferrer nofollow" class="link break-all" x-text="field.value"></a></dd>
+                                        </template>
+                                        <template x-if="field.type === 'qr' && isQrImage(field.value)">
+                                            <dd class="mt-2"><img :src="field.value" alt="{{ __('Payment QR code') }}" class="size-40 rounded-xl border border-line"></dd>
+                                        </template>
                                     </div>
                                     <button type="button" x-show="field.type === 'copy' || field.type === 'text'" @click="copy(field.value)" class="btn-ghost !px-3 !py-1.5 text-xs">
                                         <x-lucide name="copy" class="size-3.5" />

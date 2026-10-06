@@ -14,6 +14,13 @@ class StoredFile extends Model
 {
     use HasPublicId, SoftDeletes;
 
+    /**
+     * In-memory defaults matching the column defaults, so new instances are complete.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = ['scan_status' => 'pending', 'is_private' => true];
+
     protected $table = 'files';
 
     protected $fillable = [

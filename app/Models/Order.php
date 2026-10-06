@@ -15,6 +15,13 @@ class Order extends Model
     use HasPublicId, SoftDeletes;
 
     /**
+     * In-memory defaults matching the column defaults, so new instances are complete.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = ['fee' => 0, 'amount_paid' => 0, 'credit' => 0, 'rejected_attempts' => 0, 'is_escalated' => false];
+
+    /**
      * Money and status columns are never mass assignable from requests; services set them.
      *
      * @var list<string>

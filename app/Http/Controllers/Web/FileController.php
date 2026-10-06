@@ -32,7 +32,8 @@ class FileController extends Controller
         $disk = Storage::disk($stored->disk);
         abort_unless($disk->exists($path), 404);
 
-        if ($stored->owner_id !== $user->id && in_array($stored->purpose, ['payment_proofs', 'claims'], true)) {
+        // Every access to someone else's private file (proofs, claims, labels, invoices) is audited.
+        if ($stored->owner_id !== $user->id) {
             $audit->log('file.viewed', $stored, null, ['purpose' => $stored->purpose, 'thumb' => $thumbnail]);
         }
 

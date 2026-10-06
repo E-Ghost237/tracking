@@ -9,7 +9,7 @@
         @else
             <label for="captcha_answer" class="field-label">{{ __('Security check') }}</label>
             <div class="flex items-center gap-3">
-                <img src="data:image/svg+xml;base64,{{ base64_encode($challenge['svg']) }}" alt="{{ __('Arithmetic question') }}" width="170" height="54" class="rounded-lg border border-line">
+                <img src="{{ $challenge['image'] }}" alt="{{ __('Arithmetic question') }}" width="190" height="60" class="rounded-lg border border-line">
                 <input type="hidden" name="captcha_id" value="{{ $challenge['id'] }}">
                 <input id="captcha_answer" name="captcha_answer" type="text" inputmode="numeric" autocomplete="off" required class="field max-w-[120px]" placeholder="{{ __('Answer') }}">
             </div>

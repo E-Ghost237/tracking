@@ -104,19 +104,19 @@ class NotificationTemplateSeeder extends Seeder
                 'en' => ['Proof waiting for more than {{minutes}} minutes: {{order_number}}', "The proof for order {{order_number}} has been waiting for **{{minutes}} minutes**.\n\n[Review it now]({{review_url}})"],
             ],
             'admin.order_escalated' => [
-                'en' => ['Order {{order_number}} escalated after {{attempts}} rejected proofs', "Order {{order_number}} has {{attempts}} rejected proofs and needs an admin decision."],
+                'en' => ['Order {{order_number}} escalated after {{attempts}} rejected proofs', 'Order {{order_number}} has {{attempts}} rejected proofs and needs an admin decision.'],
             ],
             'admin.new_ticket' => [
                 'en' => ['New support request: {{subject}}', "A new support request was received from {{from}}.\n\nSubject: {{subject}}"],
             ],
             'admin.claim_opened' => [
-                'en' => ['New claim ({{type}}) for {{tracking_number}}', "A customer opened a {{type}} claim for shipment {{tracking_number}}."],
+                'en' => ['New claim ({{type}}) for {{tracking_number}}', 'A customer opened a {{type}} claim for shipment {{tracking_number}}.'],
             ],
             'admin.refund_needed' => [
-                'en' => ['Paid order {{order_number}} cancelled: refund to process', "The customer cancelled paid order {{order_number}} before pickup. Record the refund in the back-office."],
+                'en' => ['Paid order {{order_number}} cancelled: refund to process', 'The customer cancelled paid order {{order_number}} before pickup. Record the refund in the back-office.'],
             ],
             'admin.deletion_request' => [
-                'en' => ['Account deletion request: {{email}}', "The customer {{email}} asked for account deletion. Process it within 30 days (GDPR)."],
+                'en' => ['Account deletion request: {{email}}', 'The customer {{email}} asked for account deletion. Process it within 30 days (GDPR).'],
             ],
             'admin.payment_method_changed' => [
                 'en' => ['Payment method changed: {{method}}', "The account details of payment method **{{method}}** were changed by {{actor}} on {{time}}.\n\nIf you did not expect this change, review the audit log immediately."],

@@ -58,7 +58,7 @@ class HeuristicScanner implements MalwareScanner
         $lower = strtolower($haystack);
 
         foreach (self::SIGNATURES as $name => $signature) {
-            if (str_contains($lower, $signature)) {
+            if (str_contains($lower, strtolower($signature))) {
                 return ['clean' => false, 'signature' => $name];
             }
         }

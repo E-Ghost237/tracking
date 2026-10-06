@@ -11,6 +11,11 @@ use Throwable;
  */
 class ImageSanitizer
 {
+    /**
+     * 40 megapixels: far above any phone screenshot or scanned receipt.
+     */
+    public const MAX_PIXELS = 40_000_000;
+
     public function sanitize(StoredFile $file): void
     {
         if (! $file->isImage() || ! class_exists(\Imagick::class)) {
@@ -21,6 +26,13 @@ class ImageSanitizer
         $path = $disk->path($file->path);
 
         try {
+            // Cap decoder resources so a small, highly compressed image cannot exhaust the worker.
+            \Imagick::setResourceLimit(\Imagick::RESOURCETYPE_MEMORY, 256 * 1024 * 1024);
+            \Imagick::setResourceLimit(\Imagick::RESOURCETYPE_MAP, 512 * 1024 * 1024);
+            \Imagick::setResourceLimit(\Imagick::RESOURCETYPE_AREA, self::MAX_PIXELS);
+            \Imagick::setResourceLimit(\Imagick::RESOURCETYPE_DISK, 1024 * 1024 * 1024);
+            \Imagick::setResourceLimit(\Imagick::RESOURCETYPE_TIME, 30);
+
             $image = new \Imagick($path);
             $image->autoOrient();
             $image->stripImage();

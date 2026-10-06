@@ -14,6 +14,13 @@ class PaymentProof extends Model
 {
     use HasPublicId;
 
+    /**
+     * In-memory defaults matching the column defaults, so new instances are complete.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = ['is_duplicate' => false];
+
     protected $fillable = [];
 
     protected $hidden = ['id', 'order_payment_id', 'order_id', 'user_id', 'duplicate_of'];

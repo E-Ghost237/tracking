@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\Pages;
 
+use App\Filament\Resources\Pages\Pages\CreatePage;
+use App\Filament\Resources\Pages\Pages\EditPage;
+use App\Filament\Resources\Pages\Pages\ListPages;
 use App\Models\Page;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -69,9 +72,9 @@ class PageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Filament\Resources\Pages\Pages\ListPages::route('/'),
-            'create' => \App\Filament\Resources\Pages\Pages\CreatePage::route('/create'),
-            'edit' => \App\Filament\Resources\Pages\Pages\EditPage::route('/{record}/edit'),
+            'index' => ListPages::route('/'),
+            'create' => CreatePage::route('/create'),
+            'edit' => EditPage::route('/{record}/edit'),
         ];
     }
 }

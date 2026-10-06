@@ -60,7 +60,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
-        Model::preventAccessingMissingAttributes(! $this->app->isProduction());
 
         Password::defaults(function () {
             $rule = Password::min(10)->letters()->mixedCase()->numbers()->max(128);

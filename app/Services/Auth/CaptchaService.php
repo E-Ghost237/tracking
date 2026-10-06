@@ -26,7 +26,7 @@ class CaptchaService
     }
 
     /**
-     * @return array{driver: string, id?: string, svg?: string, site_key?: ?string}
+     * @return array{driver: string, id?: string, image?: string, site_key?: ?string}
      */
     public function challenge(Request $request): array
     {
@@ -42,7 +42,7 @@ class CaptchaService
         $challenges[$id] = ['answer' => hash('sha256', (string) ($a + $b)), 'expires' => now()->addMinutes(10)->timestamp];
         $request->session()->put(self::SESSION_KEY, $challenges);
 
-        return ['driver' => 'builtin', 'id' => $id, 'svg' => $this->render($a.' + '.$b.' = ?')];
+        return ['driver' => 'builtin', 'id' => $id, 'image' => $this->render($a.' + '.$b.' = ?')];
     }
 
     public function verify(Request $request, ?string $id, ?string $answer): bool
@@ -88,33 +88,57 @@ class CaptchaService
     }
 
     /**
-     * Renders the arithmetic question as a noisy SVG so it is not readable as page text.
+     * Rasterises the question to a PNG: glyphs are drawn as pixels with random rotation,
+     * offsets, colour, a wave distortion and noise, so the answer never appears as text
+     * in the response. This is defence in depth behind the rate limits; production uses Turnstile.
      */
     private function render(string $text): string
     {
-        $width = 170;
-        $height = 54;
-        $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="'.$width.'" height="'.$height.'" viewBox="0 0 '.$width.' '.$height.'" role="img">';
-        $svg .= '<rect width="100%" height="100%" rx="8" fill="#eef2f7"/>';
+        $width = 190;
+        $height = 60;
+        $font = base_path('vendor/dompdf/dompdf/lib/fonts/DejaVuSans-Bold.ttf');
 
-        for ($i = 0; $i < 7; $i++) {
-            $svg .= sprintf('<path d="M%d %d Q %d %d %d %d" stroke="#%s" stroke-width="1.4" fill="none" opacity="0.6"/>',
-                random_int(0, 40), random_int(0, $height), random_int(40, 130), random_int(0, $height), random_int(130, $width), random_int(0, $height),
-                substr(md5((string) random_int(0, PHP_INT_MAX)), 0, 6));
+        $canvas = imagecreatetruecolor($width, $height);
+        imagefilledrectangle($canvas, 0, 0, $width, $height, imagecolorallocate($canvas, 238, 242, 247));
+
+        for ($i = 0; $i < 220; $i++) {
+            imagesetpixel($canvas, random_int(0, $width - 1), random_int(0, $height - 1), imagecolorallocate($canvas, random_int(120, 200), random_int(120, 200), random_int(120, 200)));
         }
 
-        $x = 16;
-        foreach (str_split($text) as $char) {
+        $x = 12;
+        foreach (mb_str_split($text) as $char) {
             if ($char === ' ') {
-                $x += 8;
+                $x += 7;
 
                 continue;
             }
-            $svg .= sprintf('<text x="%d" y="%d" font-family="monospace" font-size="%d" font-weight="700" fill="#0b1b33" transform="rotate(%d %d %d)">%s</text>',
-                $x, random_int(32, 40), random_int(22, 27), random_int(-18, 18), $x, 34, htmlspecialchars($char, ENT_XML1));
+            $color = imagecolorallocate($canvas, random_int(10, 70), random_int(20, 60), random_int(40, 90));
+            imagettftext($canvas, random_int(19, 24), random_int(-24, 24), $x, random_int(38, 46), $color, $font, $char);
             $x += random_int(15, 19);
         }
 
-        return $svg.'</svg>';
+        for ($i = 0; $i < 5; $i++) {
+            imagesetthickness($canvas, random_int(1, 2));
+            imageline($canvas, random_int(0, 40), random_int(0, $height), random_int($width - 40, $width), random_int(0, $height), imagecolorallocate($canvas, random_int(60, 160), random_int(60, 160), random_int(60, 160)));
+        }
+
+        // Sine-wave displacement breaks straight baselines that OCR relies on.
+        $warped = imagecreatetruecolor($width, $height);
+        imagefilledrectangle($warped, 0, 0, $width, $height, imagecolorallocate($warped, 238, 242, 247));
+        $amplitude = random_int(2, 4);
+        $period = random_int(18, 30);
+        $phase = random_int(0, 100) / 10;
+        for ($column = 0; $column < $width; $column++) {
+            $shift = (int) round($amplitude * sin($column / $period + $phase));
+            imagecopy($warped, $canvas, $column, max(0, $shift), $column, max(0, -$shift), 1, $height - abs($shift));
+        }
+
+        ob_start();
+        imagepng($warped);
+        $png = (string) ob_get_clean();
+        imagedestroy($canvas);
+        imagedestroy($warped);
+
+        return 'data:image/png;base64,'.base64_encode($png);
     }
 }

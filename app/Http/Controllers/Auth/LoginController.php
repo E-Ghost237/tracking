@@ -53,6 +53,12 @@ class LoginController extends Controller
     public static function redirectAfterLogin(Request $request): RedirectResponse
     {
         $user = $request->user();
+        if ($user->isStaff() && ! $user->hasTwoFactorEnabled()) {
+            // Staff must set up 2FA before the back-office opens (FR-144).
+            return redirect()->route($user->preferredLocale().'.account.profile', ['setup2fa' => 1])
+                ->with('status', __('Staff accounts must enable two-factor authentication before using the back-office.'));
+        }
+
         if ($user->hasPermission(Permissions::ADMIN_ACCESS)) {
             return redirect()->intended('/'.trim((string) config('platform.admin.path'), '/'));
         }
