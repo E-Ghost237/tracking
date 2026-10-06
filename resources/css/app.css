@@ -1,0 +1,219 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/plus-jakarta-sans';
+
+@source '../views';
+@source '../js';
+@source '../../app/Enums';
+
+/*
+ * Design tokens. Placeholder brand: deep navy + signal orange, cyan for routes.
+ * Swap these when the client confirms brand colours (section 16.1).
+ */
+@theme {
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', ui-sans-serif, sans-serif;
+
+    --color-ink-950: #050c18;
+    --color-ink-900: #0a1628;
+    --color-ink-800: #12223b;
+    --color-ink-700: #1c3150;
+    --color-ink-600: #2a4468;
+
+    --color-brand-50: #fff4ed;
+    --color-brand-100: #ffe5d4;
+    --color-brand-200: #ffc6a3;
+    --color-brand-300: #ff9c66;
+    --color-brand-400: #ff7d3d;
+    --color-brand-500: #ff6b2c;
+    --color-brand-600: #e8551a;
+    --color-brand-700: #c24312;
+
+    --color-route-400: #4fd1ff;
+    --color-route-500: #22b8f0;
+
+    --color-surface: #f5f7fb;
+    --color-line: #e3e8ef;
+
+    --radius-card: 1.25rem;
+    --shadow-card: 0 1px 2px rgb(10 22 40 / 0.04), 0 8px 24px -12px rgb(10 22 40 / 0.12);
+    --shadow-lift: 0 2px 4px rgb(10 22 40 / 0.05), 0 22px 44px -18px rgb(10 22 40 / 0.28);
+
+    --animate-float: float 7s ease-in-out infinite;
+    --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+    --animate-dash: dash 1.6s linear infinite;
+    --animate-shimmer: shimmer 1.6s linear infinite;
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+
+    @keyframes pulse-ring {
+        0% { transform: scale(0.6); opacity: 0.7; }
+        100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    @keyframes dash {
+        to { stroke-dashoffset: -24; }
+    }
+
+    @keyframes shimmer {
+        to { background-position: -200% 0; }
+    }
+}
+
+@layer base {
+    html {
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-white font-sans text-slate-800;
+    }
+
+    h1, h2, h3, h4 {
+        @apply font-display tracking-tight text-ink-900;
+        text-wrap: balance;
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-brand-500;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    ::selection {
+        @apply bg-brand-200 text-ink-900;
+    }
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition duration-200 select-none disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+@utility link {
+    @apply font-medium text-brand-600 underline-offset-4 hover:underline;
+}
+
+@layer components {
+    .container-page {
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .eyebrow {
+        @apply inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] text-brand-600 uppercase;
+    }
+
+    .btn-primary {
+        @apply btn bg-brand-500 text-white shadow-[0_8px_20px_-8px_rgb(255_107_44/0.7)] hover:-translate-y-0.5 hover:bg-brand-600 active:translate-y-0;
+    }
+
+    .btn-dark {
+        @apply btn bg-ink-900 text-white hover:-translate-y-0.5 hover:bg-ink-800;
+    }
+
+    .btn-ghost {
+        @apply btn border border-line bg-white text-ink-900 hover:border-ink-900/30 hover:bg-surface;
+    }
+
+    .btn-light {
+        @apply btn border border-white/20 bg-white/10 text-white backdrop-blur hover:bg-white/20;
+    }
+
+    .card {
+        @apply rounded-[var(--radius-card)] border border-line bg-white shadow-[var(--shadow-card)];
+    }
+
+    .card-hover {
+        @apply transition duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)];
+    }
+
+    .field-label {
+        @apply mb-1.5 block text-sm font-medium text-ink-900;
+    }
+
+    .field {
+        @apply block w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm text-ink-900 shadow-xs transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15 focus:outline-none disabled:bg-surface;
+    }
+
+    .field-error {
+        @apply mt-1.5 text-sm text-red-600;
+    }
+
+    .badge {
+        @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold;
+    }
+
+    .prose-content {
+        @apply max-w-none text-[15px] leading-7 text-slate-700;
+
+        h2 { @apply mt-10 mb-3 text-2xl font-bold; }
+        h3 { @apply mt-7 mb-2 text-lg font-semibold; }
+        p { @apply my-4; }
+        ul { @apply my-4 list-disc space-y-1.5 pl-6; }
+        ol { @apply my-4 list-decimal space-y-1.5 pl-6; }
+        a { @apply link; }
+        strong { @apply font-semibold text-ink-900; }
+        table { @apply my-6 w-full overflow-hidden rounded-xl border border-line text-sm; }
+        th { @apply bg-surface px-3 py-2 text-left font-semibold text-ink-900; }
+        td { @apply border-t border-line px-3 py-2; }
+        blockquote { @apply my-6 rounded-xl border-l-4 border-brand-500 bg-brand-50 px-4 py-3 text-ink-800; }
+        code { @apply rounded bg-surface px-1.5 py-0.5 text-[13px]; }
+    }
+
+    .skeleton {
+        @apply rounded-lg bg-[linear-gradient(90deg,#eef2f7_25%,#f7f9fc_50%,#eef2f7_75%)] bg-[length:200%_100%] animate-shimmer;
+    }
+
+    .grid-bg {
+        background-image:
+            linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(ellipse at 30% 40%, black 30%, transparent 75%);
+    }
+}
+
+/*
+ * Scroll reveal (FR-06): content is visible by default. Only once JavaScript has marked
+ * the document (html.js) and motion is allowed do sections start hidden and animate in,
+ * using transforms and opacity only.
+ */
+@media (prefers-reduced-motion: no-preference) {
+    html.js [data-reveal] {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+        transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    html.js [data-reveal].is-visible {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Route lines drawn in SVG (how it works, track progress). */
+.route-dash {
+    stroke-dasharray: 6 6;
+    animation: var(--animate-dash);
+}
+
+.timeline-dot::before {
+    content: '';
+    @apply absolute inset-0 rounded-full bg-brand-500 animate-pulse-ring;
+}
