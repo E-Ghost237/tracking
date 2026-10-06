@@ -54,7 +54,7 @@
                                     <select class="field !w-auto !py-1.5 text-xs" @change="useAddress('{{ $field }}', $event.target.value)" aria-label="{{ __('Use a saved address') }}">
                                         <option value="">{{ __('Saved addresses') }}</option>
                                         @foreach ($addresses as $address)
-                                            <option value="{{ $address->public_id }}">{{ $address->label ?: $address->name }} — {{ $address->city }}</option>
+                                            <option value="{{ $address->public_id }}">{{ $address->label ?: $address->name }} · {{ $address->city }}</option>
                                         @endforeach
                                     </select>
                                 @endif
@@ -106,7 +106,7 @@
                                     <select x-model="pkg.category" class="field mt-1.5">
                                         <option value="">{{ __('Choose…') }}</option>
                                         @foreach ($categories as $code => $category)
-                                            <option value="{{ $code }}" @disabled($category['prohibited'] ?? false)>{{ __('category.'.$code) }}{{ ($category['prohibited'] ?? false) ? ' — '.__('not accepted') : (($category['restricted'] ?? false) ? ' — '.__('restrictions apply') : '') }}</option>
+                                            <option value="{{ $code }}" @disabled($category['prohibited'] ?? false)>{{ __('category.'.$code) }}{{ ($category['prohibited'] ?? false) ? ' · '.__('not accepted') : (($category['restricted'] ?? false) ? ' · '.__('restrictions apply') : '') }}</option>
                                         @endforeach
                                     </select>
                                     <span class="field-error block" x-text="fieldError('packages.' + index + '.category')"></span>
@@ -152,7 +152,7 @@
                 </div>
                 <label class="mt-5 flex cursor-pointer items-center gap-3 rounded-xl border border-line p-4">
                     <input type="checkbox" :checked="form.service.insurance" @change="toggleInsurance()" class="size-5 rounded border-line text-brand-500 focus:ring-brand-500">
-                    <span class="text-sm"><span class="font-semibold text-ink-900">{{ __('Insure my shipment') }}</span> — {{ __('covers loss and damage up to the declared value.') }}</span>
+                    <span class="text-sm"><span class="font-semibold text-ink-900">{{ __('Insure my shipment') }}</span><br><span class="text-slate-500">{{ __('Coverage for loss and damage up to the declared value.') }}</span></span>
                 </label>
                 <p class="mt-3 text-sm text-slate-600" x-show="selectedOption()"><span x-text="selectedOption() && selectedOption().network_label"></span></p>
             </section>

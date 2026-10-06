@@ -7,37 +7,40 @@
 @source '../../app/Enums';
 
 /*
- * Design tokens. Placeholder brand: deep navy + signal orange, cyan for routes.
- * Swap these when the client confirms brand colours (section 16.1).
+ * Corvane's visual language is built around a warm shipping-paper canvas,
+ * deep harbour ink and a restrained signal orange. The typography and
+ * photography do the expressive work; the interface stays clear and calm.
  */
 @theme {
     --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
     --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', ui-sans-serif, sans-serif;
+    --font-editorial: Georgia, 'Times New Roman', serif;
 
-    --color-ink-950: #050c18;
-    --color-ink-900: #0a1628;
-    --color-ink-800: #12223b;
-    --color-ink-700: #1c3150;
-    --color-ink-600: #2a4468;
+    --color-ink-950: #07151c;
+    --color-ink-900: #0d2029;
+    --color-ink-800: #19323d;
+    --color-ink-700: #294653;
+    --color-ink-600: #3a5d69;
 
-    --color-brand-50: #fff4ed;
-    --color-brand-100: #ffe5d4;
-    --color-brand-200: #ffc6a3;
-    --color-brand-300: #ff9c66;
-    --color-brand-400: #ff7d3d;
-    --color-brand-500: #ff6b2c;
-    --color-brand-600: #e8551a;
-    --color-brand-700: #c24312;
+    --color-brand-50: #fbf0e9;
+    --color-brand-100: #f7ddcf;
+    --color-brand-200: #efb79e;
+    --color-brand-300: #e98b68;
+    --color-brand-400: #dc6f4d;
+    --color-brand-500: #c54727;
+    --color-brand-600: #a83b21;
+    --color-brand-700: #862e1a;
 
-    --color-route-400: #4fd1ff;
-    --color-route-500: #22b8f0;
+    --color-route-400: #83d6cf;
+    --color-route-500: #4bbab3;
 
-    --color-surface: #f5f7fb;
-    --color-line: #e3e8ef;
+    --color-surface: #f4f1e9;
+    --color-line: #e2ded5;
+    --color-paper: #faf8f2;
 
-    --radius-card: 1.25rem;
-    --shadow-card: 0 1px 2px rgb(10 22 40 / 0.04), 0 8px 24px -12px rgb(10 22 40 / 0.12);
-    --shadow-lift: 0 2px 4px rgb(10 22 40 / 0.05), 0 22px 44px -18px rgb(10 22 40 / 0.28);
+    --radius-card: 1rem;
+    --shadow-card: 0 2px 5px rgb(32 36 30 / 0.04), 0 12px 28px -20px rgb(32 36 30 / 0.26);
+    --shadow-lift: 0 4px 8px rgb(32 36 30 / 0.06), 0 22px 42px -26px rgb(7 21 28 / 0.3);
 
     --animate-float: float 7s ease-in-out infinite;
     --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
@@ -71,7 +74,7 @@
     }
 
     body {
-        @apply bg-white font-sans text-slate-800;
+        @apply bg-paper font-sans text-slate-800;
     }
 
     h1, h2, h3, h4 {
@@ -93,7 +96,7 @@
 }
 
 @utility btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition duration-200 select-none disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition duration-200 select-none disabled:cursor-not-allowed disabled:opacity-60;
 }
 
 @utility link {
@@ -110,7 +113,7 @@
     }
 
     .btn-primary {
-        @apply btn bg-brand-500 text-white shadow-[0_8px_20px_-8px_rgb(255_107_44/0.7)] hover:-translate-y-0.5 hover:bg-brand-600 active:translate-y-0;
+        @apply btn bg-brand-500 text-white shadow-[0_7px_16px_-9px_rgb(197_71_39/0.8)] hover:-translate-y-0.5 hover:bg-brand-600 active:translate-y-0;
     }
 
     .btn-dark {
@@ -216,4 +219,135 @@
 .timeline-dot::before {
     content: '';
     @apply absolute inset-0 rounded-full bg-brand-500 animate-pulse-ring;
+}
+
+/* Editorial details used by the public shipping pages. */
+.editorial-title {
+    font-family: var(--font-editorial);
+    font-weight: 400;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+}
+
+.editorial-italic {
+    color: var(--color-brand-300);
+    font-style: italic;
+}
+
+.eyebrow-rule {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.eyebrow-rule::before {
+    width: 1.8rem;
+    height: 1px;
+    background: currentColor;
+    content: '';
+}
+
+/* Three quiet, photographed scenes replace the default logistics stock collage. */
+.hero-scene-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.025);
+    transition: opacity 1400ms cubic-bezier(0.2, 0.65, 0.2, 1), transform 9000ms ease-out;
+    will-change: opacity, transform;
+}
+
+/* The air photograph remains a useful fallback when JavaScript is unavailable. */
+.hero-scene-image:first-of-type {
+    opacity: 1;
+}
+
+html.js .hero-scene-image {
+    opacity: 0;
+}
+
+html.js .hero-scene-image.is-active {
+    opacity: 1;
+    transform: scale(1.09) translateX(-0.4%);
+}
+
+.hero-scene-overlay {
+    background:
+        linear-gradient(90deg, rgb(7 21 28 / 0.96) 0%, rgb(7 21 28 / 0.88) 34%, rgb(7 21 28 / 0.56) 62%, rgb(7 21 28 / 0.38) 100%),
+        linear-gradient(0deg, rgb(7 21 28 / 0.55), transparent 38%, rgb(7 21 28 / 0.12));
+}
+
+.hero-photo-wash {
+    background: radial-gradient(ellipse at 68% 42%, rgb(130 214 207 / 0.12), transparent 43%);
+}
+
+.hero-scene-control {
+    position: relative;
+    isolation: isolate;
+}
+
+.hero-scene-control::after {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.3rem;
+    left: 0.6rem;
+    z-index: -1;
+    height: 2px;
+    background: currentColor;
+    content: '';
+    opacity: 0;
+    transform: scaleX(0.2);
+    transform-origin: left;
+}
+
+.hero-scene-control[aria-pressed='true']::after {
+    opacity: 0.9;
+    transform: scaleX(1);
+    transition: transform 5.8s linear, opacity 180ms ease;
+}
+
+.service-photo img {
+    transition: transform 800ms cubic-bezier(0.2, 0.65, 0.2, 1), filter 500ms ease;
+}
+
+.service-photo:hover img,
+.group:hover .service-photo img {
+    transform: scale(1.045);
+}
+
+.page-masthead {
+    background-color: var(--color-surface);
+    background-image: linear-gradient(110deg, rgb(255 255 255 / 0.64), transparent 62%);
+}
+
+.page-masthead::after {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: max(2rem, calc((100vw - 80rem) / 2));
+    width: min(31vw, 27rem);
+    height: 100%;
+    background-image: radial-gradient(rgb(13 32 41 / 0.12) 0.9px, transparent 0.9px);
+    background-size: 13px 13px;
+    content: '';
+    opacity: 0.38;
+    mask-image: linear-gradient(90deg, transparent, #000 30%, #000 72%, transparent);
+    pointer-events: none;
+}
+
+@media (max-width: 767px) {
+    .hero-scene-overlay {
+        background:
+            linear-gradient(180deg, rgb(7 21 28 / 0.82) 0%, rgb(7 21 28 / 0.88) 36%, rgb(7 21 28 / 0.91) 100%),
+            linear-gradient(90deg, rgb(7 21 28 / 0.18), rgb(7 21 28 / 0.42));
+    }
+
+    .page-masthead::after {
+        right: 0;
+        width: 42vw;
+        opacity: 0.25;
+    }
 }

@@ -3,13 +3,13 @@
     <div class="container-page relative grid gap-12 py-16 lg:grid-cols-12">
         <div class="lg:col-span-4">
             <a href="{{ lroute('home') }}" class="flex items-center gap-2.5">
-                <span class="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 text-white">
+                <span class="grid size-9 place-items-center rounded-xl bg-brand-500 text-white">
                     <x-lucide name="navigation" class="size-[18px] rotate-45" />
                 </span>
                 <span class="font-display text-xl font-extrabold text-white">{{ config('platform.brand.name') }}</span>
             </a>
             <p class="mt-5 max-w-sm text-sm leading-6 text-slate-400">
-                {{ __('Air, sea and road freight between Africa, Europe and North America, with live tracking and human-verified payments.') }}
+                {{ __('Air, sea and road freight for the routes that matter to you. Get a clear quote, dependable updates and support from a real person when you need it.') }}
             </p>
             <div class="mt-6 space-y-2 text-sm">
                 <a href="mailto:{{ config('platform.brand.support_email') }}" class="flex items-center gap-2 hover:text-white"><x-lucide name="mail" class="size-4 text-brand-400" /> {{ config('platform.brand.support_email') }}</a>

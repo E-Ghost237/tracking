@@ -2,7 +2,7 @@
 
 @section('content')
     <div x-data="faqSearch">
-        <x-page-header :eyebrow="__('Help center')" icon="life-buoy" :title="__('How can we help?')">
+        <x-page-header :eyebrow="__('Help center')" icon="life-buoy" :title="__('A good answer should make the next step clearer.')" :lead="__('Browse practical guidance on booking, packaging, tracking, payments and delivery. Search a topic below, or open a question to see the details. If your situation is different, our team can help you work through it.')">
             <div class="relative mt-8 max-w-xl">
                 <x-lucide name="search" class="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-slate-400" />
                 <label for="faq-search" class="sr-only">{{ __('Search the help center') }}</label>

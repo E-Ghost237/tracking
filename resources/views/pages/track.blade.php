@@ -5,9 +5,9 @@
         <section class="relative overflow-hidden bg-ink-950 text-white">
             <div class="pointer-events-none absolute inset-0 grid-bg"></div>
             <div class="container-page relative py-14">
-                <p class="eyebrow !text-brand-300"><x-lucide name="radar" class="size-4" /> {{ __('Tracking') }}</p>
-                <h1 class="mt-3 text-3xl font-extrabold !text-white sm:text-4xl">{{ __('Where is my parcel?') }}</h1>
-                <p class="mt-3 max-w-2xl text-slate-300">{{ __('Enter up to 20 numbers, one per line or separated by commas. We recognise USPS, UPS, FedEx and :brand numbers automatically.', ['brand' => config('platform.brand.name')]) }}</p>
+                <p class="eyebrow eyebrow-rule !text-brand-300"><x-lucide name="radar" class="size-4" /> {{ __('Shipment tracking') }}</p>
+                <h1 class="editorial-title mt-4 max-w-3xl text-5xl leading-[0.98] !text-white sm:text-6xl">{{ __('See where the journey stands.') }}</h1>
+                <p class="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">{{ __('Enter up to 20 tracking numbers, one per line or separated by commas. We recognise supported USPS, UPS, FedEx and :brand numbers, then bring available scans together so you do not have to check several sites.', ['brand' => config('platform.brand.name')]) }}</p>
 
                 <form @submit.prevent="lookup()" class="mt-8 grid max-w-3xl gap-3 sm:grid-cols-[1fr_auto]" action="{{ lroute('track') }}" method="GET">
                     <label for="track-input" class="sr-only">{{ __('Tracking numbers') }}</label>
@@ -68,12 +68,12 @@
                                     <div class="mt-6 grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm">
                                         <div>
                                             <p class="text-xs text-slate-500">{{ __('From') }}</p>
-                                            <p class="font-semibold text-ink-900" x-text="result.origin || '—'"></p>
+                                            <p class="font-semibold text-ink-900" x-text="result.origin || '{{ __('Not provided') }}'"></p>
                                         </div>
                                         <x-lucide name="arrow-right" class="size-5 text-slate-300" />
                                         <div class="text-right">
                                             <p class="text-xs text-slate-500">{{ __('To') }}</p>
-                                            <p class="font-semibold text-ink-900" x-text="result.destination || '—'"></p>
+                                            <p class="font-semibold text-ink-900" x-text="result.destination || '{{ __('Not provided') }}'"></p>
                                         </div>
                                     </div>
 

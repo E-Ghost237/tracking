@@ -29,11 +29,11 @@ const RADIUS = 1;
 const DEG = Math.PI / 180;
 
 const MODE_COLORS = {
-    air: '#4fd1ff',
-    express: '#ffd166',
-    sea: '#6aa8ff',
-    road: '#ff8a4c',
-    route: '#ff6b2c',
+    air: '#b5e3df',
+    express: '#f1bd79',
+    sea: '#71b9b4',
+    road: '#e98156',
+    route: '#d7522d',
 };
 
 /** lat/lon in degrees to a point on the sphere (three-globe convention). */
@@ -75,7 +75,7 @@ function dotTexture() {
 export class Globe {
     constructor(container, options = {}) {
         this.container = container;
-        this.options = { autoRotate: true, interactive: true, dotColor: '#5b7fb0', ...options };
+        this.options = { autoRotate: true, interactive: true, dotColor: '#89b7b2', ...options };
         this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.lanes = [];
         this.markers = [];
@@ -110,7 +110,7 @@ export class Globe {
     buildSphere() {
         const sphere = new Mesh(
             new SphereGeometry(RADIUS * 0.995, 64, 64),
-            new MeshBasicMaterial({ color: new Color('#0b1a33'), transparent: true, opacity: 0.94 }),
+            new MeshBasicMaterial({ color: new Color('#102630'), transparent: true, opacity: 0.94 }),
         );
         this.sphere = sphere;
         this.root.add(sphere);
@@ -123,7 +123,7 @@ export class Globe {
                 side: BackSide,
                 blending: AdditiveBlending,
                 depthWrite: false,
-                uniforms: { glowColor: { value: new Color('#3aa0ff') } },
+                uniforms: { glowColor: { value: new Color('#4bbab3') } },
                 vertexShader: `
                     varying vec3 vNormal;
                     void main() {
@@ -168,7 +168,7 @@ export class Globe {
         this.root.add(points);
     }
 
-    addHub(lat, lon, color = '#ff6b2c') {
+    addHub(lat, lon, color = '#d7522d') {
         const position = toVector(lat, lon, RADIUS * 1.004);
         const group = new Group();
         group.position.copy(position);
@@ -228,8 +228,8 @@ export class Globe {
     showRoute(origin, destination, current = null) {
         this.clearRoute();
         const lane = this.addLane(origin, destination, 'route', { emphasis: true });
-        const a = this.addHub(origin.lat, origin.lon, '#4fd1ff');
-        const b = this.addHub(destination.lat, destination.lon, '#ff6b2c');
+        const a = this.addHub(origin.lat, origin.lon, '#83d6cf');
+        const b = this.addHub(destination.lat, destination.lon, '#d7522d');
         const objects = [lane.line, lane.head, a, b];
         if (current) {
             const c = this.addHub(current.lat, current.lon, '#ffd166');

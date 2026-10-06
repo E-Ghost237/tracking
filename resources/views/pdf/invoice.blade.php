@@ -15,7 +15,7 @@
         <thead><tr><th>{{ __('Description') }}</th><th class="right">{{ __('Amount') }}</th></tr></thead>
         <tbody>
             @php($breakdown = $order?->quote?->price_breakdown['breakdown'] ?? [])
-            <tr><td>{{ __($shipment->service) }} — {{ number_format($shipment->chargeable_weight_g / 1000, 2) }} kg {{ __('chargeable') }}</td><td class="right">{{ \App\Support\Money::format($breakdown['freight'] ?? $order->subtotal, $order->currency) }}</td></tr>
+            <tr><td>{{ __($shipment->service) }} · {{ number_format($shipment->chargeable_weight_g / 1000, 2) }} kg {{ __('chargeable') }}</td><td class="right">{{ \App\Support\Money::format($breakdown['freight'] ?? $order->subtotal, $order->currency) }}</td></tr>
             @foreach ($breakdown['surcharges'] ?? [] as $surcharge)
                 <tr><td>{{ __($surcharge['name']) }}</td><td class="right">{{ \App\Support\Money::format($surcharge['amount'], $order->currency) }}</td></tr>
             @endforeach

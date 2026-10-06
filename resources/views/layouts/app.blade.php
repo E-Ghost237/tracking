@@ -1,7 +1,7 @@
 @php
     $brand = config('platform.brand.name');
     $pageTitle = trim(($title ?? '') !== '' ? $title.' · '.$brand : $brand.' · '.__('Air, sea and road freight with live tracking'));
-    $pageDescription = $description ?? __('Track parcels, get instant freight quotes and book air, sea and road shipments between Africa, Europe and the United States.');
+    $pageDescription = $description ?? __('Track parcels, compare air, sea and road services, and request a quote for routes across North America, Europe and supported destinations worldwide.');
     $locale = app()->getLocale();
     $dark = $darkHeader ?? false;
 @endphp
@@ -25,6 +25,8 @@
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ asset('images/freight-air.jpg') }}">
+    <meta property="og:image:alt" content="{{ __('Air, sea and road freight across a connected global network') }}">
     <meta property="og:locale" content="{{ $locale === 'fr' ? 'fr_FR' : 'en_US' }}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     @stack('preload')
@@ -41,7 +43,7 @@
     <script type="application/ld+json" nonce="{{ request()->attributes->get('csp_nonce') }}">{!! $organization !!}</script>
     @stack('head')
 </head>
-<body class="min-h-screen bg-white antialiased {{ $bodyClass ?? '' }}">
+<body class="min-h-screen bg-paper antialiased {{ $bodyClass ?? '' }}">
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg">{{ __('Skip to content') }}</a>
 
     @include('partials.header', ['dark' => $dark])
