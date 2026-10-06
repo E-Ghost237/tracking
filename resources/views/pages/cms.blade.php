@@ -7,7 +7,7 @@
     <x-page-header :eyebrow="in_array($slug, ['customs', 'packing', 'about']) ? __('Guide') : __('Legal')" :title="$page->title" :lead="$page->summary" />
     <div class="container-page grid gap-12 py-14 lg:grid-cols-4">
         <article class="prose-content lg:col-span-3">{!! $html !!}</article>
-        <aside class="h-fit space-y-4 rounded-xl border border-line bg-white p-5 text-sm lg:sticky lg:top-24">
+        <aside class="h-fit space-y-4 rounded-[6px] border border-line bg-white p-5 text-sm lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
             <div>
                 <p class="text-[10px] font-semibold tracking-[0.15em] text-slate-500 uppercase">{{ __('Last updated') }}</p>
                 <p class="mt-1 font-medium text-ink-900">{{ $page->updated_at?->translatedFormat('j F Y') }}</p>

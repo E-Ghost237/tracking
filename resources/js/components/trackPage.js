@@ -136,13 +136,21 @@ export default () => ({
         }
     },
 
+    /**
+     * Same three semantic families plus neutral as components/status-badge.blade.php,
+     * so a status never changes colour between the account and public tracking.
+     */
     statusTone(status) {
         return {
-            delivered: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
-            delayed: 'bg-amber-50 text-amber-800 ring-amber-600/20',
-            at_customs: 'bg-amber-50 text-amber-800 ring-amber-600/20',
-            returned: 'bg-red-50 text-red-700 ring-red-600/20',
-            cancelled: 'bg-red-50 text-red-700 ring-red-600/20',
-        }[status] || 'bg-sky-50 text-sky-800 ring-sky-600/20';
+            delivered: 'bg-emerald-50 text-emerald-800 ring-emerald-700/20',
+            delayed: 'bg-amber-50 text-amber-900 ring-amber-700/20',
+            at_customs: 'bg-amber-50 text-amber-900 ring-amber-700/20',
+            returned: 'bg-red-50 text-red-800 ring-red-700/20',
+            cancelled: 'bg-red-50 text-red-800 ring-red-700/20',
+            awaiting_payment: 'bg-slate-100 text-slate-700 ring-slate-500/20',
+            payment_under_review: 'bg-amber-50 text-amber-900 ring-amber-700/20',
+            ready_picked_up: 'bg-ink-50 text-ink-800 ring-ink-600/20',
+            out_for_delivery: 'bg-ink-50 text-ink-800 ring-ink-600/20',
+        }[status] || 'bg-ink-50 text-ink-800 ring-ink-600/20';
     },
 });

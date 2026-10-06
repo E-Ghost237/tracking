@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => __('Contact'), 'description' => __('Contact our team in English or French.')])
 
 @section('content')
-    <x-page-header :eyebrow="__('Contact')" icon="mail" :title="__('Tell us what you need help with.')" :lead="__('Share a little context and, if you have one, include your order or tracking number. A member of our support team will read your message and reply in English or French, usually within one business day. The more detail you provide up front, the faster we can find the right answer for your situation.')" />
+    <x-page-header photo="service_sea" :eyebrow="__('Contact')" icon="mail" :title="__('Tell us what you need help with.')" :lead="__('Share a little context and, if you have one, include your order or tracking number. A member of our support team will read your message and reply in English or French, usually within one business day. The more detail you provide up front, the faster we can find the right answer for your situation.')" />
 
     <div class="container-page grid gap-10 py-14 lg:grid-cols-3">
         <form method="POST" action="{{ lroute('contact.store') }}" class="card space-y-5 p-6 sm:p-8 lg:col-span-2">
@@ -15,34 +15,34 @@
             <div class="grid gap-5 sm:grid-cols-2">
                 <div>
                     <label for="name" class="field-label">{{ __('Full name') }}</label>
-                    <input id="name" name="name" value="{{ old('name', auth()->user()?->name) }}" required maxlength="120" class="field" autocomplete="name">
-                    @error('name')<p class="field-error">{{ $message }}</p>@enderror
+                    <input id="name" name="name" value="{{ old('name', auth()->user()?->name) }}" required maxlength="120" class="field" autocomplete="name" @error('name') aria-invalid="true" aria-describedby="name-error" @enderror>
+                    @error('name')<p class="field-error" id="name-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label for="email" class="field-label">{{ __('Email') }}</label>
-                    <input id="email" name="email" type="email" value="{{ old('email', auth()->user()?->email) }}" required maxlength="190" class="field" autocomplete="email">
-                    @error('email')<p class="field-error">{{ $message }}</p>@enderror
+                    <input id="email" name="email" type="email" value="{{ old('email', auth()->user()?->email) }}" required maxlength="190" class="field" autocomplete="email" @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>
+                    @error('email')<p class="field-error" id="email-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label for="phone" class="field-label">{{ __('Phone (optional)') }}</label>
-                    <input id="phone" name="phone" value="{{ old('phone') }}" maxlength="30" class="field" autocomplete="tel">
-                    @error('phone')<p class="field-error">{{ $message }}</p>@enderror
+                    <input id="phone" name="phone" value="{{ old('phone') }}" maxlength="30" class="field" autocomplete="tel" @error('phone') aria-invalid="true" aria-describedby="phone-error" @enderror>
+                    @error('phone')<p class="field-error" id="phone-error">{{ $message }}</p>@enderror
                 </div>
                 <div>
                     <label for="tracking_number" class="field-label">{{ __('Tracking number (optional)') }}</label>
-                    <input id="tracking_number" name="tracking_number" value="{{ old('tracking_number') }}" maxlength="40" class="field font-mono">
-                    @error('tracking_number')<p class="field-error">{{ $message }}</p>@enderror
+                    <input id="tracking_number" name="tracking_number" value="{{ old('tracking_number') }}" maxlength="40" class="field font-mono" @error('tracking_number') aria-invalid="true" aria-describedby="tracking_number-error" @enderror>
+                    @error('tracking_number')<p class="field-error" id="tracking_number-error">{{ $message }}</p>@enderror
                 </div>
             </div>
             <div>
                 <label for="subject" class="field-label">{{ __('Subject') }}</label>
-                <input id="subject" name="subject" value="{{ old('subject') }}" required maxlength="160" class="field">
-                @error('subject')<p class="field-error">{{ $message }}</p>@enderror
+                <input id="subject" name="subject" value="{{ old('subject') }}" required maxlength="160" class="field" @error('subject') aria-invalid="true" aria-describedby="subject-error" @enderror>
+                @error('subject')<p class="field-error" id="subject-error">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label for="message" class="field-label">{{ __('Message') }}</label>
-                <textarea id="message" name="message" rows="6" required maxlength="5000" class="field">{{ old('message') }}</textarea>
-                @error('message')<p class="field-error">{{ $message }}</p>@enderror
+                <textarea id="message" name="message" rows="6" required maxlength="5000" class="field" @error('message') aria-invalid="true" aria-describedby="message-error" @enderror>{{ old('message') }}</textarea>
+                @error('message')<p class="field-error" id="message-error">{{ $message }}</p>@enderror
             </div>
             <x-captcha :challenge="$captcha" />
             <button type="submit" class="btn-primary">{{ __('Send message') }} <x-lucide name="arrow-right" class="size-4" /></button>

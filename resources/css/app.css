@@ -1,65 +1,92 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/inter';
-@import '@fontsource-variable/plus-jakarta-sans';
 
 @source '../views';
 @source '../js';
 @source '../../app/Enums';
+@source '../../preview';
+/* The back-office has its own theme and its own sources. */
+@source not '../views/filament';
 
 /*
- * Corvane's visual language is built around a warm shipping-paper canvas,
- * deep harbour ink and a restrained signal orange. The typography and
- * photography do the expressive work; the interface stays clear and calm.
- */
+|--------------------------------------------------------------------------
+| Design system — one navy, one signal accent, one neutral family
+|--------------------------------------------------------------------------
+|
+| The interface language is intentionally narrow: a deep navy for structure and
+| trust, a single signal accent reserved for calls to action, and one cool
+| neutral ramp for text and surfaces. Hierarchy comes from spacing, weight and
+| size — not from colour variety, gradients, glows or decorative motion.
+|
+| Every token below is consumed by the existing templates through stable names
+| (ink-*, brand-*, surface, line, paper), so a change here is applied across the
+| whole application at once.
+|
+*/
+
 @theme {
-    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-    --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', ui-sans-serif, sans-serif;
-    --font-editorial: Georgia, 'Times New Roman', serif;
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-display: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
 
-    --color-ink-950: #07151c;
-    --color-ink-900: #0d2029;
-    --color-ink-800: #19323d;
-    --color-ink-700: #294653;
-    --color-ink-600: #3a5d69;
+    /* Navy — structure, headers, dark bands, primary text. */
+    --color-ink-50: #eff3f8;
+    --color-ink-100: #dde6f0;
+    --color-ink-200: #c0d0e2;
+    --color-ink-300: #94adc9;
+    --color-ink-400: #5d7fa6;
+    --color-ink-500: #375c86;
+    --color-ink-600: #234669;
+    --color-ink-700: #17334f;
+    --color-ink-800: #0f2740;
+    --color-ink-900: #0b1f36;
+    --color-ink-950: #061526;
 
-    --color-brand-50: #fbf0e9;
-    --color-brand-100: #f7ddcf;
-    --color-brand-200: #efb79e;
-    --color-brand-300: #e98b68;
-    --color-brand-400: #dc6f4d;
-    --color-brand-500: #c54727;
-    --color-brand-600: #a83b21;
-    --color-brand-700: #862e1a;
+    /* Signal accent — calls to action only (white on brand-500 = 5.2:1). */
+    --color-brand-50: #fdf2ec;
+    --color-brand-100: #fbe0d1;
+    --color-brand-200: #f5bb9a;
+    --color-brand-300: #ef9a68;
+    --color-brand-400: #e2703a;
+    --color-brand-500: #c2410c;
+    --color-brand-600: #9a3412;
+    --color-brand-700: #7c2d12;
 
-    --color-route-400: #83d6cf;
-    --color-route-500: #4bbab3;
+    /* Transport-mode accents, used sparingly for route legs only. */
+    --color-route-400: #7fb3e0;
+    --color-route-500: #3b74a8;
 
-    --color-surface: #f4f1e9;
-    --color-line: #e2ded5;
-    --color-paper: #faf8f2;
+    /* Surfaces: white canvas, one grey band, hairlines. */
+    --color-paper: #ffffff;
+    --color-surface: #f5f7fa;
+    --color-line: #e3e8ef;
 
-    --radius-card: 1rem;
-    --shadow-card: 0 2px 5px rgb(32 36 30 / 0.04), 0 12px 28px -20px rgb(32 36 30 / 0.26);
-    --shadow-lift: 0 4px 8px rgb(32 36 30 / 0.06), 0 22px 42px -26px rgb(7 21 28 / 0.3);
+    /*
+     * Corner radius. Logistics interfaces read as precise, so the scale stops
+     * at 8px and is used consistently: 4px inputs and buttons, 6px panels,
+     * 8px large media and full-bleed containers further out.
+     */
+    --radius-xs: 2px;
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 6px;
+    --radius-xl: 6px;
+    --radius-2xl: 6px;
+    --radius-3xl: 8px;
+    --radius-card: 6px;
 
-    --animate-float: float 7s ease-in-out infinite;
-    --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
-    --animate-dash: dash 1.6s linear infinite;
+    /* Elevation: two quiet levels, no glows. */
+    --shadow-card: 0 1px 2px rgb(6 21 38 / 0.05);
+    --shadow-lift: 0 2px 4px rgb(6 21 38 / 0.05), 0 12px 20px -14px rgb(6 21 38 / 0.22);
+
+    /* The Tailwind defaults are flattened so legacy markup stops floating. */
+    --shadow-xs: 0 1px 2px rgb(6 21 38 / 0.04);
+    --shadow-sm: 0 1px 2px rgb(6 21 38 / 0.05);
+    --shadow-md: 0 1px 2px rgb(6 21 38 / 0.05), 0 3px 6px -4px rgb(6 21 38 / 0.12);
+    --shadow-lg: 0 2px 4px rgb(6 21 38 / 0.05), 0 12px 20px -14px rgb(6 21 38 / 0.22);
+    --shadow-xl: 0 2px 4px rgb(6 21 38 / 0.05), 0 12px 20px -14px rgb(6 21 38 / 0.22);
+    --shadow-2xl: 0 2px 4px rgb(6 21 38 / 0.06), 0 18px 28px -20px rgb(6 21 38 / 0.24);
+
     --animate-shimmer: shimmer 1.6s linear infinite;
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-    }
-
-    @keyframes pulse-ring {
-        0% { transform: scale(0.6); opacity: 0.7; }
-        100% { transform: scale(2.2); opacity: 0; }
-    }
-
-    @keyframes dash {
-        to { stroke-dashoffset: -24; }
-    }
 
     @keyframes shimmer {
         to { background-position: -200% 0; }
@@ -74,12 +101,18 @@
     }
 
     body {
-        @apply bg-paper font-sans text-slate-800;
+        @apply bg-paper font-sans text-[15px] text-slate-700;
     }
 
     h1, h2, h3, h4 {
-        @apply font-display tracking-tight text-ink-900;
+        @apply font-display text-ink-950;
+        letter-spacing: -0.018em;
         text-wrap: balance;
+    }
+
+    /* Numbers that are compared or copied are always tabular. */
+    code, kbd, samp, .tabular {
+        font-variant-numeric: tabular-nums;
     }
 
     :focus-visible {
@@ -91,49 +124,64 @@
     }
 
     ::selection {
-        @apply bg-brand-200 text-ink-900;
+        @apply bg-ink-900 text-white;
     }
 }
 
 @utility btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition duration-200 select-none disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-[4px] px-[18px] py-2.5 text-sm font-semibold transition duration-150 select-none active:translate-y-[1px] disabled:cursor-not-allowed disabled:opacity-55;
 }
 
 @utility link {
-    @apply font-medium text-brand-600 underline-offset-4 hover:underline;
+    @apply font-medium text-brand-600 underline-offset-4 hover:text-brand-700 hover:underline;
 }
 
 @layer components {
     .container-page {
-        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+        @apply mx-auto w-full max-w-[1220px] px-5 sm:px-6 lg:px-8;
     }
 
+    /* Small uppercase label. Never below 12px, never below 4.5:1. */
     .eyebrow {
-        @apply inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] text-brand-600 uppercase;
+        @apply inline-flex items-center gap-2 text-xs font-semibold tracking-[0.08em] text-slate-500 uppercase;
     }
 
     .btn-primary {
-        @apply btn bg-brand-500 text-white shadow-[0_7px_16px_-9px_rgb(197_71_39/0.8)] hover:-translate-y-0.5 hover:bg-brand-600 active:translate-y-0;
+        @apply btn bg-brand-500 text-white hover:bg-brand-600 active:bg-brand-700;
     }
 
     .btn-dark {
-        @apply btn bg-ink-900 text-white hover:-translate-y-0.5 hover:bg-ink-800;
+        @apply btn bg-ink-900 text-white hover:bg-ink-800 active:bg-ink-950;
     }
 
     .btn-ghost {
-        @apply btn border border-line bg-white text-ink-900 hover:border-ink-900/30 hover:bg-surface;
+        @apply btn border border-slate-300 bg-white text-ink-900 hover:border-slate-400 hover:bg-surface;
     }
 
     .btn-light {
-        @apply btn border border-white/20 bg-white/10 text-white backdrop-blur hover:bg-white/20;
+        @apply btn border border-white/25 bg-white/10 text-white hover:bg-white/20;
     }
 
+    .btn-link {
+        @apply inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700 hover:underline;
+    }
+
+    /* The trailing arrow leans forward on hover, so the row reads as one control. */
+    .btn-link svg {
+        @apply transition-transform duration-150;
+    }
+
+    .btn-link:hover svg {
+        transform: translateX(2px);
+    }
+
+    /* Panels: a hairline gives structure without stacking shadows. */
     .card {
-        @apply rounded-[var(--radius-card)] border border-line bg-white shadow-[var(--shadow-card)];
+        @apply rounded-[6px] border border-line bg-white;
     }
 
     .card-hover {
-        @apply transition duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)];
+        @apply transition duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)];
     }
 
     .field-label {
@@ -141,63 +189,234 @@
     }
 
     .field {
-        @apply block w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm text-ink-900 shadow-xs transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/15 focus:outline-none disabled:bg-surface;
+        @apply block w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2.5 text-sm text-ink-900 transition-colors placeholder:text-slate-500 hover:border-slate-400 focus:border-ink-900 focus:ring-2 focus:ring-ink-900/10 focus:outline-none disabled:bg-surface disabled:text-slate-500;
     }
 
     .field-error {
-        @apply mt-1.5 text-sm text-red-600;
+        @apply mt-1.5 text-sm text-red-700;
     }
 
+    /*
+     * Selects.
+     *
+     * The closed control is drawn like every other field, with our own chevron
+     * instead of the operating system's arrow, so a filter looks the same on
+     * Windows, macOS and Linux. The option list follows the browser: where the
+     * customisable picker is available (appearance: base-select) the panel,
+     * the options and the tick are ours — rounded, roomy, with the current
+     * choice tinted — and everywhere else the native list is kept, which is
+     * still keyboard- and screen-reader-native.
+     */
+    select.field {
+        appearance: none;
+        color-scheme: light;
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23546078' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.7rem center;
+        background-size: 1rem 1rem;
+        padding-right: 2.4rem;
+        cursor: pointer;
+    }
+
+    /* Options keep the page font and a light background in every browser that paints them. */
+    select.field option,
+    select.field optgroup {
+        font: inherit;
+        background-color: #fff;
+        color: var(--color-ink-900);
+    }
+
+    select.field optgroup {
+        font-weight: 600;
+        color: var(--color-slate-600);
+    }
+
+    select.field option:checked {
+        font-weight: 600;
+        color: var(--color-ink-950);
+    }
+
+    select.field option:disabled {
+        color: var(--color-slate-500);
+    }
+
+    @supports (appearance: base-select) {
+        select.field,
+        select.field::picker(select) {
+            appearance: base-select;
+        }
+
+        /* The picker supplies its own arrow, so the background one steps aside. */
+        select.field {
+            background-image: none;
+            padding-right: 1rem;
+        }
+
+        select.field::picker-icon {
+            color: var(--color-slate-500);
+            transition: transform 160ms ease;
+        }
+
+        select.field:open::picker-icon {
+            transform: rotate(180deg);
+        }
+
+        select.field::picker(select) {
+            margin-block: 6px;
+            padding: 4px;
+            border: 1px solid var(--color-line);
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: opacity 140ms ease, transform 140ms ease,
+                display 140ms allow-discrete, overlay 140ms allow-discrete;
+        }
+
+        select.field:open::picker(select) {
+            opacity: 1;
+            transform: none;
+        }
+
+        select.field option {
+            border-radius: 4px;
+            padding: 8px 10px;
+        }
+
+        select.field option:hover,
+        select.field option:focus-visible {
+            background-color: var(--color-surface);
+        }
+
+        select.field option:checked {
+            background-color: var(--color-brand-50);
+            color: var(--color-ink-950);
+        }
+
+        select.field option::checkmark {
+            color: var(--color-brand-600);
+        }
+    }
+
+    /* Compact chip for modes, references and metadata. */
     .badge {
-        @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold;
+        @apply inline-flex items-center gap-1.5 rounded-[3px] px-2 py-1 text-xs font-semibold;
     }
 
     .prose-content {
         @apply max-w-none text-[15px] leading-7 text-slate-700;
 
-        h2 { @apply mt-10 mb-3 text-2xl font-bold; }
-        h3 { @apply mt-7 mb-2 text-lg font-semibold; }
+        h2 { @apply mt-10 mb-3 text-2xl font-bold text-ink-950; }
+        h3 { @apply mt-7 mb-2 text-lg font-semibold text-ink-950; }
         p { @apply my-4; }
         ul { @apply my-4 list-disc space-y-1.5 pl-6; }
         ol { @apply my-4 list-decimal space-y-1.5 pl-6; }
         a { @apply link; }
-        strong { @apply font-semibold text-ink-900; }
-        table { @apply my-6 w-full overflow-hidden rounded-xl border border-line text-sm; }
-        th { @apply bg-surface px-3 py-2 text-left font-semibold text-ink-900; }
+        strong { @apply font-semibold text-ink-950; }
+        table { @apply my-6 w-full overflow-hidden rounded-[6px] border border-line text-sm; }
+        th { @apply bg-surface px-3 py-2 text-left font-semibold text-ink-950; }
         td { @apply border-t border-line px-3 py-2; }
-        blockquote { @apply my-6 rounded-xl border-l-4 border-brand-500 bg-brand-50 px-4 py-3 text-ink-800; }
-        code { @apply rounded bg-surface px-1.5 py-0.5 text-[13px]; }
+        blockquote { @apply my-6 rounded-[4px] border-l-4 border-brand-500 bg-brand-50 px-4 py-3 text-ink-900; }
+        code { @apply rounded-[3px] bg-surface px-1.5 py-0.5 text-[13px] text-ink-900; }
     }
 
     .skeleton {
-        @apply rounded-lg bg-[linear-gradient(90deg,#eef2f7_25%,#f7f9fc_50%,#eef2f7_75%)] bg-[length:200%_100%] animate-shimmer;
+        @apply rounded-[4px] bg-[linear-gradient(90deg,#eef1f5_25%,#f7f9fb_50%,#eef1f5_75%)] bg-[length:200%_100%] animate-shimmer;
     }
 
-    .grid-bg {
-        background-image:
-            linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
-        background-size: 56px 56px;
-        mask-image: radial-gradient(ellipse at 30% 40%, black 30%, transparent 75%);
+    /* Page masthead: a navy band that anchors every sub-page. */
+    .page-masthead {
+        @apply bg-ink-950 text-white;
     }
 }
 
+/* Panels that sit on the grey band need a white surface and no border. */
+@utility panel-flat {
+    @apply rounded-[6px] bg-white;
+}
+
 /*
- * Scroll reveal (FR-06): content is visible by default. Only once JavaScript has marked
- * the document (html.js) and motion is allowed do sections start hidden and animate in,
- * using transforms and opacity only.
+ * Scroll reveal: content is visible by default and only animates once JavaScript
+ * has marked the document. Transform and opacity only, disabled for reduced motion.
  */
 @media (prefers-reduced-motion: no-preference) {
     html.js [data-reveal] {
         opacity: 0;
-        transform: translateY(24px);
-        transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+        transform: translateY(16px);
+        transition: opacity 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
         transition-delay: var(--reveal-delay, 0ms);
     }
 
     html.js [data-reveal].is-visible {
         opacity: 1;
         transform: none;
+    }
+}
+
+/*
+ * Motion.
+ *
+ * Every effect below is transform or opacity only, runs once, and stays under
+ * half a second unless it is a slow drift on a photograph. Motion is used to
+ * mark a change — copy arriving, a meter filling, a disclosure opening — never
+ * to decorate a static page. The reduced-motion block immediately below
+ * switches all of it off for anyone who has asked for that.
+ */
+@keyframes rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes bar-grow {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes slow-drift {
+    from {
+        transform: scale(1.045);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* Masthead copy arrives in reading order rather than all at once. */
+    .page-masthead .container-page > *:nth-child(1) { animation: rise-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .page-masthead .container-page > *:nth-child(2) { animation: rise-in 0.5s 0.06s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .page-masthead .container-page > *:nth-child(3) { animation: rise-in 0.5s 0.12s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .page-masthead .container-page > *:nth-child(4) { animation: rise-in 0.5s 0.18s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+    /* The hero photograph settles into place instead of sitting perfectly still. */
+    .hero-scene-image,
+    .page-masthead img {
+        animation: slow-drift 18s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    /* Progress meters fill from the left when they arrive. */
+    [role="progressbar"] > * {
+        transform-origin: left center;
+        animation: bar-grow 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    /* An opened disclosure animates its content, never the summary that was clicked. */
+    details[open] > *:not(summary) {
+        animation: rise-in 0.25s ease both;
     }
 }
 
@@ -210,44 +429,27 @@
     }
 }
 
-/* Route lines drawn in SVG (how it works, track progress). */
+/* Route legs drawn in SVG (how it works, track progress). */
 .route-dash {
-    stroke-dasharray: 6 6;
-    animation: var(--animate-dash);
+    stroke-dasharray: 4 6;
 }
 
-.timeline-dot::before {
-    content: '';
-    @apply absolute inset-0 rounded-full bg-brand-500 animate-pulse-ring;
-}
-
-/* Editorial details used by the public shipping pages. */
+/* Headline treatment: sans, tight, no italic accent. */
 .editorial-title {
-    font-family: var(--font-editorial);
-    font-weight: 400;
-    letter-spacing: -0.055em;
+    font-weight: 700;
+    letter-spacing: -0.025em;
     text-wrap: balance;
 }
 
 .editorial-italic {
-    color: var(--color-brand-300);
-    font-style: italic;
+    font-style: normal;
+    color: inherit;
 }
 
-.eyebrow-rule {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-}
-
-.eyebrow-rule::before {
-    width: 1.8rem;
-    height: 1px;
-    background: currentColor;
-    content: '';
-}
-
-/* Three quiet, photographed scenes replace the default logistics stock collage. */
+/*
+ * The hero crossfade is retained while the home page is reworked; the slow zoom
+ * and the timed progress underline are gone.
+ */
 .hero-scene-image {
     position: absolute;
     inset: 0;
@@ -255,12 +457,9 @@
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transform: scale(1.025);
-    transition: opacity 1600ms cubic-bezier(0.2, 0.65, 0.2, 1), transform 9000ms ease-out;
-    will-change: opacity, transform;
+    transition: opacity 900ms cubic-bezier(0.2, 0.65, 0.2, 1);
 }
 
-/* The air photograph remains a useful fallback when JavaScript is unavailable. */
 .hero-scene-image:first-of-type {
     opacity: 1;
 }
@@ -271,166 +470,75 @@ html.js .hero-scene-image {
 
 html.js .hero-scene-image.is-active {
     opacity: 1;
-    transform: scale(1.09) translateX(-0.4%);
-}
-
-/* Express scene has a slightly different treatment */
-html.js .hero-scene-image.is-active[data-scene="express"] {
-    transform: scale(1.06) translateX(0.2%);
-}
-
-/* Smooth scene transitions with subtle parallax */
-.hero-scene-image.is-active {
-    z-index: 1;
-}
-
-.hero-scene-image:not(.is-active) {
-    z-index: 0;
 }
 
 .hero-scene-overlay {
-    background:
-        linear-gradient(90deg, rgb(7 21 28 / 0.96) 0%, rgb(7 21 28 / 0.88) 34%, rgb(7 21 28 / 0.56) 62%, rgb(7 21 28 / 0.38) 100%),
-        linear-gradient(0deg, rgb(7 21 28 / 0.55), transparent 38%, rgb(7 21 28 / 0.12));
-}
-
-.hero-photo-wash {
-    background: radial-gradient(ellipse at 68% 42%, rgb(130 214 207 / 0.12), transparent 43%);
-}
-
-.hero-scene-control {
-    position: relative;
-    isolation: isolate;
-}
-
-.hero-scene-control::after {
-    position: absolute;
-    right: 0.6rem;
-    bottom: 0.3rem;
-    left: 0.6rem;
-    z-index: -1;
-    height: 2px;
-    background: currentColor;
-    content: '';
-    opacity: 0;
-    transform: scaleX(0.2);
-    transform-origin: left;
-}
-
-.hero-scene-control[aria-pressed='true']::after {
-    opacity: 0.9;
-    transform: scaleX(1);
-    transition: transform 5.8s linear, opacity 180ms ease;
+    background: linear-gradient(90deg, rgb(6 21 38 / 0.95) 0%, rgb(6 21 38 / 0.86) 38%, rgb(6 21 38 / 0.55) 70%, rgb(6 21 38 / 0.4) 100%);
 }
 
 .service-photo img {
-    transition: transform 800ms cubic-bezier(0.2, 0.65, 0.2, 1), filter 500ms ease;
+    transition: transform 500ms cubic-bezier(0.2, 0.65, 0.2, 1);
 }
 
-.service-photo:hover img,
 .group:hover .service-photo img {
-    transform: scale(1.045);
+    transform: scale(1.02);
 }
 
-.page-masthead {
-    background-color: var(--color-surface);
-    background-image: linear-gradient(110deg, rgb(255 255 255 / 0.64), transparent 62%);
+/*
+ * The sticky header height is published as a custom property so layout offsets
+ * (main padding, sticky sidebars) follow one source of truth. The header is a
+ * single bar, so this is the bar height and nothing else.
+ */
+:root {
+    --header-h: 3.75rem; /* 60px */
 }
 
-.page-masthead::after {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    right: max(2rem, calc((100vw - 80rem) / 2));
-    width: min(31vw, 27rem);
+@media (min-width: 1024px) {
+    :root {
+        --header-h: 4rem; /* 64px */
+    }
+}
+
+/*
+ * Header menus (Ship, Network, Support).
+ *
+ * The panels open on pointer hover and on keyboard focus, which is pure CSS: a
+ * menu cannot be left standing open by a missed event or a failed script, and it
+ * still works if JavaScript has not loaded. The trigger button is focusable, so
+ * :focus-within also covers touch devices, where a tap focuses the button before
+ * a hover would ever exist. Escape is handled in resources/js/components/
+ * siteHeader.js by blurring the focused element, which closes the panel again.
+ */
+.nav-group {
+    position: relative;
+    display: flex;
     height: 100%;
-    background-image: radial-gradient(rgb(13 32 41 / 0.12) 0.9px, transparent 0.9px);
-    background-size: 13px 13px;
-    content: '';
-    opacity: 0.38;
-    mask-image: linear-gradient(90deg, transparent, #000 30%, #000 72%, transparent);
-    pointer-events: none;
+    align-items: center;
 }
 
-@media (max-width: 767px) {
-    .hero-scene-overlay {
-        background:
-            linear-gradient(180deg, rgb(7 21 28 / 0.82) 0%, rgb(7 21 28 / 0.88) 36%, rgb(7 21 28 / 0.91) 100%),
-            linear-gradient(90deg, rgb(7 21 28 / 0.18), rgb(7 21 28 / 0.42));
-    }
-
-    .page-masthead::after {
-        right: 0;
-        width: 42vw;
-        opacity: 0.25;
-    }
-}
-
-/* Enhanced service photo hover effect */
-.service-photo {
-    position: relative;
-    overflow: hidden;
-}
-
-.service-photo::after {
-    content: '';
+.nav-panel {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 40%, rgba(7, 21, 28, 0.6) 100%);
+    top: 100%;
+    z-index: 10;
+    visibility: hidden;
     opacity: 0;
-    transition: opacity 400ms ease;
+    transform: translateY(-6px);
+    transition: opacity 130ms ease, transform 130ms ease, visibility 130ms;
 }
 
-.group:hover .service-photo::after,
-.service-photo:hover::after {
+.nav-group:hover > .nav-panel,
+.nav-group:focus-within > .nav-panel {
+    visibility: visible;
     opacity: 1;
+    transform: none;
 }
 
-/* Globe connection lines effect */
-.globe-container {
-    position: relative;
-}
-
-.globe-container::before {
-    content: '';
-    position: absolute;
-    inset: -20%;
-    background: radial-gradient(circle at center, rgba(131, 214, 207, 0.08) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* Smooth scroll reveal enhancement */
-html.js [data-reveal] {
-    will-change: transform, opacity;
-}
-
-/* Decorative grid pattern for dark sections */
-.grid-bg {
-    background-image:
-        linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
-    background-size: 56px 56px;
-}
-
-/* Floating animation for decorative elements */
-.animate-float-slow {
-    animation: float 8s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-10px) rotate(1deg);
+@media (prefers-reduced-motion: reduce) {
+    .nav-panel {
+        transition: none;
     }
 }
 
-/* Gradient text effect for headings */
-.gradient-text {
-    background: linear-gradient(135deg, #c54727 0%, #e98b68 50%, #c54727 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.h-sticky-offset {
+    top: calc(var(--header-h) + 1.5rem);
 }

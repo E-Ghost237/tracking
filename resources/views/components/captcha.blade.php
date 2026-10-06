@@ -9,11 +9,11 @@
         @else
             <label for="captcha_answer" class="field-label">{{ __('Security check') }}</label>
             <div class="flex items-center gap-3">
-                <img src="{{ $challenge['image'] }}" alt="{{ __('Arithmetic question') }}" width="190" height="60" class="rounded-lg border border-line">
+                <img src="{{ $challenge['image'] }}" alt="{{ __('Arithmetic question') }}" width="190" height="60" class="rounded-[6px] border border-line">
                 <input type="hidden" name="captcha_id" value="{{ $challenge['id'] }}">
-                <input id="captcha_answer" name="captcha_answer" type="text" inputmode="numeric" autocomplete="off" required class="field max-w-[120px]" placeholder="{{ __('Answer') }}">
+                <input id="captcha_answer" name="captcha_answer" type="text" inputmode="numeric" autocomplete="off" required class="field max-w-[120px]" placeholder="{{ __('Answer') }}" @error('captcha_answer') aria-invalid="true" aria-describedby="captcha_answer-error" @enderror>
             </div>
         @endif
-        @error('captcha_answer')<p class="field-error">{{ $message }}</p>@enderror
+        @error('captcha_answer')<p class="field-error" id="captcha_answer-error">{{ $message }}</p>@enderror
     </div>
 @endif

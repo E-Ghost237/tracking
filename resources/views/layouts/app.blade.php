@@ -1,9 +1,8 @@
 @php
     $brand = config('platform.brand.name');
-    $pageTitle = trim(($title ?? '') !== '' ? $title.' · '.$brand : $brand.' · '.__('Air, sea and road freight with live tracking'));
+    $pageTitle = trim(($title ?? '') !== '' ? $title.' · '.$brand : $brand.' · '.__('Air, sea, road and express freight with live tracking'));
     $pageDescription = $description ?? __('Track parcels, compare air, sea and road services, and request a quote for routes across North America, Europe and supported destinations worldwide.');
     $locale = app()->getLocale();
-    $dark = $darkHeader ?? false;
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $locale }}" class="scroll-smooth">
@@ -13,7 +12,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
-    <meta name="theme-color" content="#0a1628">
+    <meta name="theme-color" content="#061526">
     @if ($noindex ?? false)
         <meta name="robots" content="noindex, nofollow">
     @endif
@@ -44,20 +43,20 @@
     @stack('head')
 </head>
 <body class="min-h-screen bg-paper antialiased {{ $bodyClass ?? '' }}">
-    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg">{{ __('Skip to content') }}</a>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-[4px] focus:bg-white focus:px-4 focus:py-2 focus:shadow-lg">{{ __('Skip to content') }}</a>
 
-    @include('partials.header', ['dark' => $dark])
+    @include('partials.header')
 
-    @if (session('status'))
-        <div class="container-page pt-24 {{ $dark ? 'absolute inset-x-0 z-40' : '' }}" role="status">
-            <div class="flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 shadow-sm">
-                <x-lucide name="circle-check" class="mt-0.5 size-5 shrink-0 text-emerald-600" />
-                <p>{{ session('status') }}</p>
+    <main id="main" class="pt-[var(--header-h)]">
+        @if (session('status'))
+            <div class="container-page pt-6" role="status">
+                <div class="flex items-start gap-3 rounded-[4px] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+                    <x-lucide name="circle-check" class="mt-0.5 size-5 shrink-0 text-emerald-700" />
+                    <p>{{ session('status') }}</p>
+                </div>
             </div>
-        </div>
-    @endif
+        @endif
 
-    <main id="main" @class(['pt-[72px]' => ! $dark])>
         @yield('content')
     </main>
 

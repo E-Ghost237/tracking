@@ -6,6 +6,7 @@ use App\Exceptions\DomainRuleException;
 use App\Http\Controllers\Controller;
 use App\Services\Pricing\QuoteCalculator;
 use App\Support\Money;
+use App\Services\Pricing\TransitWindows;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Cache;
 
@@ -25,7 +26,7 @@ class RatesController extends Controller
 
     private const WEIGHTS = [1, 5, 10, 25, 50];
 
-    public function __invoke(QuoteCalculator $calculator): View
+    public function __invoke(QuoteCalculator $calculator, TransitWindows $transit): View
     {
         $locale = app()->getLocale();
 
@@ -58,6 +59,6 @@ class RatesController extends Controller
             return $rows;
         });
 
-        return view('pages.rates', ['rows' => $table, 'weights' => self::WEIGHTS]);
+        return view('pages.rates', ['rows' => $table, 'weights' => self::WEIGHTS, 'transit' => $transit->labels()]);
     }
 }
